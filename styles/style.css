@@ -1,0 +1,36 @@
+.reveal section img {
+    border: none;
+    box-shadow: none;
+}
+
+
+.salmon {
+    color: salmon;
+}
+
+.crimson {
+    color: crimson;
+}
+
+.anchor {
+    position: relative;
+}
+
+.docked {
+    position: absolute;
+    left:-190px;
+}
+
+.docked.down {
+    top: 100%;
+}
+
+.docked.up {
+    bottom: 100%;
+}
+
+.docked span {
+    font-size: 0.75rem;
+    display: inline-block;
+    min-width: 400px;
+}
