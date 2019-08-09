@@ -12,25 +12,10 @@
     color: crimson;
 }
 
-.anchor {
-    position: relative;
+img[alt$=">"] {
+    float: right;
 }
 
-.docked {
-    position: absolute;
-    left:-190px;
-}
-
-.docked.down {
-    top: 100%;
-}
-
-.docked.up {
-    bottom: 100%;
-}
-
-.docked span {
-    font-size: 0.75rem;
-    display: inline-block;
-    min-width: 400px;
+img[alt$="<"] {
+    float: left;
 }
