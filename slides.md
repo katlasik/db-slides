@@ -1,5 +1,5 @@
 
-## Bazy danych
+#### Bazy danych
 ![Relacyjne bazy danych](images/database.jpg)
 
 ---
@@ -47,7 +47,7 @@ danych implementowane w aplikacjach bazodanowych
 #### Klucz główny
 
 
-Do jednoznacznej identyfikacji wierszy stosuje klucz główny (*ang.* **primary key**), czyli jedną z kolumn lub ich grupę, których wartości są unikatowe w całej tabeli (dzięki czemu jednoznacznie identyfikują wiersz).
+Do jednoznacznej identyfikacji wierszy stosuje klucz główny (*ang.* **primary key**), czyli jedną z kolumn lub ich grupę, których wartości są unikatowe w całej tabeli (dzięki czemu jednoznacznie identyfikują wiersz(*ang.* **row**)).
 
 ---
 
@@ -85,16 +85,43 @@ Zapytania **SQL** mogą także wykonywać operacje wstawiania danych, usuwania d
 
 ---
 
-Podstawowe instrukcje to:
+###### Podstawowe instrukcje to:
 
-* **SHOW DATABASES** - wyświetla bazy danych na serwerze
-* **USE [nazwa bazy danych]** - wybiera bazę danych
-* **SHOW TABLES** - wyświetla tabele w wybranej bazie danych.
-* **DESC [bazwa tabeli]** - wyświetla detale tabeli
+* **SHOW DATABASES;** - wyświetla bazy danych na serwerze
+* **USE [nazwa bazy danych];** - wybiera bazę danych
+* **SHOW TABLES;** - wyświetla tabele w wybranej bazie danych.
+* **DESC [bazwa tabeli];** - wyświetla detale tabeli
 
 ---
 
+Do bazy danych możemy łaczyć się przez narzędzia takie jak `Mysql Workbench`,
+`IntelliJ` lub przez linię poleceń korzystając z narzędzia `mysql`.
+
+Możemy się połączyć z bazą danych przy pomocy `mysql` używając polecenia:
+
+```bash
+mysql -u {użytkownik} -p'{hasło}' -h {host} -P {port} -D {nazwa bazy}
+```
+
+```bash
+mysql -u school_user -p'pass' -h 0.0.0.0 -P 3306 -D school
+```
+---
+
 ## Data Query Language
+
+---
+
+##### Komentarze
+
+```sql
+# Jednoliniowy
+-- Jednoliniowy
+/* 
+   Blokowy
+   Wieloliniowy
+ */
+```
 
 ---
 
@@ -110,7 +137,7 @@ SELECT id, first_name FROM students
 ```
 ---
 
-Możemy ograniczyć liczbę wyników za pomocą `LIMIT` oraz przesuwać punkt start za pomocą `OFFSET`.
+Możemy ograniczyć liczbę wyników za pomocą `LIMIT` oraz przesuwać punkt startu za pomocą `OFFSET`.
 
 ```sql
 SELECT * FROM [nazwa_tabeli] LIMIT [ilość_wierszy] OFFSET [punkt startu];
@@ -153,6 +180,13 @@ SELECT * FROM [nazwa_tabeli] ORDER BY [nazwa_kolumny1, nazwa_kolumny2, ...];
 SELECT * FROM students ORDER BY age, first_name;
 ```
 
+Możemy kontrolować koleność sortowania danych za pomocą słów **ASC** - kolejność roznąca
+oraz **DESC** malejąca. **ASC** jest domyślną kolejnością.
+
+```sql
+SELECT * FROM students ORDER BY age DESC;
+```
+
 ---
 
 ###### Predykaty i filtrowanie danych
@@ -164,7 +198,7 @@ Pobierane dane możemy filtrować za pomocą słowa kluczowego `WHERE` do które
    ```
 * `>`, `>=`, `<`, `<=` to operatory porównania.
    ```sql
-  SELECT * FROM students age > 10;
+  SELECT * FROM students WHERE age > 10;
    ```
 * `IN` - operator sprawdzający czy wartość należy do zbioru.
    ```sql
@@ -175,7 +209,6 @@ Pobierane dane możemy filtrować za pomocą słowa kluczowego `WHERE` do które
  ```sql
  SELECT * FROM students WHERE age BETWEEN 15 AND 17;
  ```
- 
 ---
 
 * `LIKE` porównujący tekst z innym wyrażeniem tekstowym zawierającym znaki uniwersalne % (znak procenta), _ (znak podkreślenia)
@@ -195,6 +228,20 @@ Możemy również negować predykaty za pomocą `NOT`.
  SELECT * FROM students WHERE id NOT BETWEEN 3 AND 6;
   ```
 ---
+
+#### NULL
+
+**NULL ** specjalny znacznik w języku SQL, wskazujący, że dana nie istnieje w bazie danych.
+Aby kolumna mogła przyjnować wartości NULL musi mieć ustawiony atrybut NULLABLE.
+
+Filtrując po wartości **NULL** musimy korzystać ze specjalnego predykatu **IS / IS NOT**:
+
+ ```sql
+ SELECT * FROM students WHERE age IS NOT NULL;
+ SELECT * FROM students WHERE age IS NULL;
+  ```
+
+---
 #### Funkcje SQL
 
 Na kolumnach możemy wykonywać operacje używając funkcji:  
@@ -211,14 +258,31 @@ Na kolumnach możemy wykonywać operacje używając funkcji:
 Podstawowe funkcje związane z tekstem:
 
 * **CONCAT(argument1, ...)** - łączy ze sobą łańcuchy tekstowe
+  ```sql
+  SELECT CONCAT(p.prefix, '-', p.number) FROM phone p-- +48-514444654
+  ```
 * **LENGTH(argument)** - zwraca długość argumentu
-* **SUBSTRING(argument,pozycja, długość)** zwraca argument począwszy od wskazanej pozycji o zadanej ilości znaków
-* **LOWER(argument)** zwraca argument pisany małymi literami
-* **UPPER(argument)** zwraca argument pisany dużymi literami
-* **LPAD(argument, długość, znaki)** zwraca argument uzupełniony do lewej strony określonym ciągiem znaków
-* **LTRIM(argument)** usuwa znaki spacji z lewej strony argumentu
-* **RPAD(argument, długość, znaki)** zwraca argument uzupełniony do prawej strony określonym ciągiem znaków
-* **RTRIM(argument)** usuwa znaki spacji z prawej strony argumentu
+* **SUBSTRING(argument,pozycja, długość)** - zwraca argument począwszy od wskazanej pozycji o zadanej ilości znaków
+  ```sql
+  SELECT SUBSTRING('raz dwa trzy', 5, 3)
+   ```
+* **LOWER(argument)** - zwraca argument pisany małymi literami
+* **UPPER(argument)** - zwraca argument pisany dużymi literami
+
+---
+Podstawowe funkcje związane z tekstem c.d.:
+
+* **REPLACE(tekst, do_zamienienia, zamiennik)** - zamienia tekst
+  ```sql
+  SELECT REPLACE('raz dwa', 'raz', 'zero') -- zero dwa
+  ```
+* **LPAD(argument, długość, znaki)** - zwraca argument uzupełniony do lewej strony określonym ciągiem znaków
+  ```sql
+  SELECT LPAD('123', '6', '0') -- 000123
+  ```
+* **LTRIM(argument)** - usuwa znaki spacji z lewej strony argumentu
+* **RPAD(argument, długość, znaki)** - zwraca argument uzupełniony do prawej strony określonym ciągiem znaków
+* **RTRIM(argument)** - usuwa znaki spacji z prawej strony argumentu
 
 ---
 
@@ -226,19 +290,103 @@ Podstawowe funkcje związane z datą i czasem:
 
 * **CURRENT_DATE()** - zwraca bieżącą datę
 * **CURRENT_TIME()** - zwraca bieżący czas
-* **CURRENT_DATETIME()** albl **NOW()** - zwraca bieżącą datę z czasem
+* **CURRENT_DATETIME()** albo **NOW()** - zwraca bieżącą datę z czasem
 * **DATE(argument)** - zwraca datę z przekazanego tekstu
-* **DATEDIFF(wyrażenie_1,wyrażenie_2)** - zwraca ilość dni pomiędzy datami przekazanymi jako argumenty funkcji
-* **MONTH(data)** - pobiera miesiąc z przekazanego argumentu
-* **YEAR(data)** - zwraca rok z przekazanego argumentu
+  ```sql
+  SELECT DATE('2019-04-04')
+  ```
 
 ---
 
-i inne...
+Podstawowe funkcje związane z datą i czasem c.d:
 
-* **COALESCE(arg1, arg2, ...)** - zwraca pierwszy argument, który nie jest nullem
+* **DATE_ADD(data, interwał)** - dodaje określony interwał do daty
+  ```sql
+  SELECT DATE_ADD(date, INTERVAL 20 DAY)
+  ```
+* **DATEDIFF(wyrażenie_1,wyrażenie_2)** - zwraca ilość dni pomiędzy datami przekazanymi jako argumenty funkcji
+    ```sql
+    SELECT DATEDIFF(date, CURRENT_DATE())
+    ```
+* **MONTH(data)** - pobiera miesiąc z przekazanego argumentu
+  ```sql
+  SELECT MONTH(date)
+  ```
+* **EXTRACT(wyrażenie)** -- wyciąga element z daty
+  ```sql
+  SELECT EXTRACT(DAY FROM CURRENT_DATE())
+  ```
+
+---
+
+Datę możemy formatować za pomocą funkcji **DATE_FORMAT**:
+
+```sql
+SELECT DATE_FORMAT('2017-06-15', '%M %d %Y'); -- June 15 2
+SELECT DATE_FORMAT('2017-06-15', '%W %M %e %Y'); -- Thursday June 15 2017
+SELECT DATE_FORMAT(birthdate, '%d.%m.%Y') FROM employees; -- 18.12.1988
+```
+
+---
+
+Podstawowe funkcje związane z liczbami
+
 * **RAND()** - zwraca losową liczbę
-* **SQRT()** - zwraca pierwiastek z liczby
+* **ABS(liczba)** - zwraca moduł z liczby
+* **SQRT(liczba)** - zwraca pierwiastek z liczby
+  ```sql
+  SELECT SQRT(25) -- 5
+  ```
+* **ROUND(liczba)** - zaokrągla liczbę do najbliższej liczby całkowitej
+  ```sql
+  SELECT ROUND(5.6) -- 6
+  ```
+* **FORMAT(liczba, ilość_miejsc)** - zaokrągla liczbę, do ilości miejsc po przecinku 
+  ```sql
+  SELECT FORMAT(3.355555, 2) -- 3.36
+  ``` 
+---
+
+I inne:
+
+* **GREATEST(arg1, arg2, ...)** - zwraca największy element
+  ```sql
+  SELECT GREATEST('zero', 'raz', 'dwa')
+  ```
+* **LEAST(arg1, arg2, ...)** - zwraca najmniejszy element element
+* **COALESCE(arg1, arg2, ...)** - zwraca pierwszy argument, który nie jest nullem
+  ```sql
+  SELECT COALESCE(d.short_desc, d.long_desc, 'brak') FROM division d
+  ``` 
+---
+
+#### Wyrażenie case
+
+Wyrażenia `case` możemy użyć do zamiany (translacji) wyniku na inny.
+
+Możemy dopasowaywać wartość do warunków:
+
+```sql
+SELECT
+    CASE department.shortcut
+        WHEN 'acc' THEN 'Accounting'
+        WHEN 'eng' THEN 'Engineering'
+        WHEN 'r&d' THEN 'Research'                   
+     END
+ FROM department;
+```
+
+Możemy użyć również wersji z dowolnym predykatem:
+
+```sql
+SELECT
+    CASE
+        WHEN age < 18 THEN 'Forbidden'
+        ELSE 'Ok'
+    END
+FROM children;
+```
+
 ---
 
 #### Agregacje wyników
@@ -269,18 +417,61 @@ SELECT employee, year, AVG(value) AS avg_income
 FROM incomes 
 GROUP BY employee, year;
 ```
+---
+
+Możemy wykonać także filtrowanie wyników po agregacji używając klauzuli `HAVING`:
+
+```sql
+SELECT employee, year, AVG(value) AS avg_income 
+FROM incomes 
+GROUP BY employee, year HAVING avg_income > 2000;
+```
+---
+
+#### Podzapytania
+Podzapytanie (ang. *subquery*) to instrukcja **SELECT** zagnieżdżona w innej instrukcji SQL, która dostarcza dla tej
+drugiej danych wejściowych.
 
 ---
 
-##### Podzapytania
-Podzapytanie to instrukcja **SELECT** zagnieżdżona w innej instrukcji SQL, która dostarcza dla tej
-drugiej danych wejściowych.
-
-* Podzapytanie **zagnieżdżone** występuje wtedy, gdy wynik wewnętrznego zapytania zostaje przekazany do zewnętrznego zapytania,
+Podzapytanie **zagnieżdżone** występuje wtedy, gdy wynik wewnętrznego zapytania zostaje przekazany do zewnętrznego zapytania.
+Możemy używać ich w predykatach:
 ```sql
 SELECT surname, salary
 FROM employee
+-- podzapytanie musi wzrócić jeden wynik w jednej kolumnu
 WHERE salary > (SELECT avg(salary) FROM employee)
+```
+```sql
+SELECT surname, salary
+FROM employee
+-- podzapytanie może zwrócić więcej wyników,
+-- ale ciągle musi być to jedna kolumna
+WHERE name IN (SELECT name FROM managers) 
+```
+---
+
+Możemy również użyć podzapytania, żeby utworzyć kolumnę.
+
+```sql
+-- podzapytanie tworzące kolumn avg_salry musi zwrócić jeden wynik
+-- w jednej kolumnie
+SELECT surname, salary, (SELECT avg(salary) FROM employee) AS avg_salary
+FROM employee
+```
+
+Podzapytanie może być użyte jako tabela stworzona *ad-hoc*:
+
+```sql
+SELECT 
+   newly_hired_employees.surname, 
+   newly_hired_employees.salary
+FROM (
+   SELECT surname, salary, position
+   FROM employee 
+   WHERE hired_on > DATE('2018-01-01')
+) newly_hired_employees
+WHERE position = 'manager'
 ```
 
 ---
@@ -295,6 +486,38 @@ WHERE e1.salary > (SELECT avg(salary)
                    FROM employee e2
                    WHERE e2.dept_id = e1.dept_id)
 ```
+---
+
+Operator **EXISTS** zwraca prawdę jeżeli podzapytanie zwróci co najmniej jedną wartość.
+
+```sql
+SELECT name
+FROM suppliers
+WHERE EXISTS (
+    SELECT product_name 
+    FROM products 
+    WHERE products.supplier_id = suppliers.id AND price < 20
+); 
+
+```
+---
+
+Operator **ALL** zraca *true* tylko jeżeli warunek jest spełniony dla wszystkich wierszy zapytania.
+
+```sql
+SELECT name
+FROM products
+WHERE id = ALL (SELECT product_id FROM orders WHERE order = 10 OR order = 2); 
+```
+
+Operator **ANY** zraca *true* tylko jeżeli przynajmniej warunek jest spełniony dla wszystkich wierszy zapytania.
+
+```sql
+SELECT name
+FROM products
+WHERE id = ANY (SELECT product_id FROM orders WHERE order = 10); 
+```
+
 ---
 
 #### Złączenia
@@ -425,6 +648,134 @@ FROM external_employees;
 
 ---
 
+### Rodzaje relacji 
+
+---
+
+##### Jeden do jednego
+
+Relacja między jedną encją, a druga. W bazie relacyjnej oznacza, że jedna tabela posiada klucz obcy do drugiej tabeli.
+
+![one-to-one](/images/one-to-one.png)
+
+---
+
+##### Jeden do wielu
+
+Relacja między jedną encją, a wieloma. W bazie relacyjnej modelowana identycznie jak relacja jeden do jeden.
+
+![one-to-many](/images/one-to-many.png)
+
+---
+
+##### Wiele do wielu
+
+Relacja między wieloma encjami, a wieloma. W bazie relacyjnej modelowana za pomocą dodatkowej tabeli.
+
+![many-to-many](/images/many-to-many.png)
+
+Tabele *wiele-do-wielu* często posiadają **złożone klucze główne**.
+
+---
+
+#### Common Table Expressions
+
+**CTE** pozwalają nam na stworzenie nazwanych podzapytań do których możemy potem odwoływać sie jak do tabel.
+
+```sql
+WITH average_salaries AS (
+    SELECT
+        e.name
+        AVG(s.salary) AS avg_salary
+    FROM employees e
+    JOIN salaries s ON e.id = s.employee_id
+    GROUP BY e.name
+) SELECT
+     name,
+     avg_salary
+  FROM average_salaries
+  WHERE avg_salary > 2000
+  UNION
+  SELECT
+    name,
+    avg_salary
+  FROM average_salaries
+  WHERE avg_salary < 1000
+```
+
+---
+
+Możemy tworzyć również rekurencyjne podzapytania **CTE**.
+
+```sql
+WITH RECURSIVE days AS (
+    SELECT CURRENT_DATE AS day
+    UNION ALL
+    SELECT DATE_ADD(day, INTERVAL 1 DAY) AS day
+    FROM days
+    WHERE day < DATE_ADD(CURRENT_DATE, INTERVAL 10 DAY)
+) SELECT * FROM days;
+```
+---
+
+### SQL Window functions
+
+---
+
+**Window functions** pozwalają nam wykowynywać agregacje, które nie wpływają na resztę zapytania.
+
+```sql
+SELECT [kolumna1, kolumna2, ...],
+    funkcja({arg1, arg2, ...}) 
+    OVER (PARTITION BY [kolumna1, kolumn2, ...] 
+    ORDER BY [kolumna1, kolumn2, ...])
+FROM [tabela];
+```
+
+```sql
+SELECT 
+    depname,
+    salary,
+    avg(salary) OVER (PARTITION BY depname)
+FROM empsalary;
+```
+
+```sql
+SELECT 
+   depname, 
+   salary,
+   rank() OVER (PARTITION BY depname ORDER BY salary DESC, empno)
+FROM empsalary;
+```
+
+---
+
+```sql
+SELECT
+  f.id, f.release_year, f.category_id, f.rating,
+  AVG(rating) OVER (PARTITION BY release_year) AS year_avg
+FROM films f
+```
+
+
+![window](/images/windowfunctions.svg)
+
+---
+
+##### Przykładowe window functions:
+
+* **SUM** - wyznacza sumę wartości w oknie
+* **AVG** - wyznacza średnią wartość w oknie
+* **COUNT** - oblicza ilość wierszy w oknie
+* **RANK** - wyznacza ranking wierszy, jeżeli więcej niż jeden wierwsz otrzymuje dany numer, to kolejne są odpowiednio pominięte 
+* **DENSE_RANK** - wyznacza ranking wierszy bez pomijania numerów
+* **ROW_NUMBER** - zwraca numer wiersza
+* **LAG** - zwraca wartość z poprzedniego wiersza
+* **LEAD** - zwraca wartość z kolejnego wiersza
+
+
+---
+
 ## Data Manipulation Language
 
 ---
@@ -437,7 +788,6 @@ INSERT INTO [nazwa_tabeli]([kolumny...]) VALUES ([wartości...])
 ```sql
 INSERT INTO department(id, name, city) VALUES(10, 'ACCOUNTING', 'NEW YORK');
 INSERT INTO department VALUES(11, 'LEGAL', 'LOS ANGELES');
-
 ```
 
 Możemy też wykonywać `insert` za pomocą danych zwróconych przez zapytanie:
@@ -445,6 +795,29 @@ Możemy też wykonywać `insert` za pomocą danych zwróconych przez zapytanie:
 ```sql
 INSERT INTO department SELECT DEPTNO, DNAME, LOC FROM migrated_department;
 ```
+---
+
+#### Skąd sie biorą id?
+Możemy jawnie zadeklarowąć jaki **id** ma zostać użyty w insercie.
+  ```sql
+  INSERT INTO department(id, name) VALUES(10, 'ACCOUNTING');
+  ```
+---
+
+Możemy też pozostawić na bazie danych obowiązek wygenerowania klucza.
+  Strategia generowania klucza zależy od bazy danych:
+  
+   * poprzez wywołanie sekwencji (dla *Oracle*, *PostgreSQL*, itd.)
+     ```sql
+     INSERT INTO department(id, name) VALUES(dep_seq.nextval, 'ACCOUNTING');
+     ``` 
+   
+   * poprzez stworzenie autoinkrementującej się kolumny (dla *MySQL*, *MariaDB*, itd.)
+     oraz pozostawienie kolumny w *insercie* pustej:
+     ```sql
+     INSERT INTO department(name) VALUES('ACCOUNTING');
+     ```
+
 
 ---
 
@@ -458,7 +831,13 @@ WHERE [predykat]
 ```sql
 UPDATE department
 SET dept_name = ’Sales’,
+manager = ’Zosia’
 WHERE dept_name = ’Finance’;
+```
+```sql
+UPDATE department AS src, department AS target 
+SET target.description = src.description
+WHERE target.manager_id = src.manager_id
 ```
 
 ---
@@ -520,6 +899,7 @@ CREATE TABLE employee (
   FOREIGN KEY(DEPTNO) REFERENCES department (DEPTNO)
 );
 ```
+---
 
 Tabelę możemy usunąć przy pomocy `DROP`.
 
@@ -553,6 +933,52 @@ ALTER TABLE department DROP COLUMN DESCR;
 
 ---
 
+#### Atrybuty kolumn
+
+* **NOT NULL** - kolumna nie może przyjmować wartości null
+* **UNIQUE** - kolumna będzie przechowywać tylko unikalne wartości
+* **AUTO_INCREMENT** - kolumna typu liczbowego, która wstawia w miejsce *NULL*
+                       liczby z sekwencji
+* **CHECK** - kolumna będzie przyjmować tylko wartości spełniające predykat
+
+---
+
+#### Klucze główne i obce
+Możemy określić, które kolumny są kluczami za pomocą atrybutów:
+
+```sql
+CREATE TABLE employee (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  department_id INT REFERENCES depardment(id)
+);
+```
+
+Możemy też zdefiniować je jako ostatnie wyrażenie przy tworzeniu tabeli:
+
+```sql
+CREATE TABLE employee (
+  id INT AUTO_INCREMENT,
+  department_id INT,
+  PRIMARY KEY(id),
+  FOREIGN KEY(department_id) REFERENCES department(id)
+);
+```
+---
+
+W ten sposób możemy też tworzyć złożone klucze:
+
+```sql
+CREATE TABLE employee_x_departments (
+  employee_id INT,
+  department_id INT,
+  PRIMARY KEY(employee_id, department_id),
+  FOREIGN KEY(department_id) REFERENCES department(id),
+  FOREIGN KEY(employee_id) REFERENCES employee(id)
+);
+```
+
+---
+
 #### Widoki
 
 **Widok** (zwany również wirtualną tabelą, ang. *view*) składa się ze zbioru wierszy
@@ -567,7 +993,7 @@ Przy każdej zmianie tabeli źródłowych widok jest uaktualniany.
 ---
 Widok tworzymy zapytaniem:
 ```sql
-CREATE {MATERIALIZED} VIEW OR REPLACE [nazwa_widoku] ([kolumny])
+CREATE VIEW OR REPLACE [nazwa_widoku] ([kolumny])
 AS SELECT [zapytanie];
 ```
 
@@ -601,7 +1027,7 @@ Zdarzenia te mogą być wykonywane bezpośrednio przed operacją lub tuż po nie
 ---
 Wyzwalacz dodajemy używając `CREATE TRIGGER`:
 ```sql
-CREATE TRIGGER OR REPLACE [nazwa_wyzwalacza]
+CREATE TRIGGER [nazwa_wyzwalacza]
 { BEFORE | AFTER }
 { INSERT | UPDATE | DELETE }
 ON [nazwa_tabeli]
@@ -610,29 +1036,26 @@ FOR EACH ROW
 ```
 Jeśli wyzwalacz wykonuje więcej niż jedną instrukcje umieszcza się te instrukcje pomiędzy słowami kluczowym **BEGIN** i **END**.
 
+```sql
+CREATE TRIGGER set_grade BEFORE UPDATE ON marks
+    FOR EACH ROW
+BEGIN
+    IF new.points >= 90 THEN
+        SET new.grade = 'EXCELLENT';
+    ELSEIF new.points >= 45 AND new.pooints < 90 THEN
+        SET new.gtrade = 'OK';
+    ELSE
+        SET new.grade = 'UNSATISFACTORY';
+    END IF;
+END;
+```
+
+---
+
 Możemy też usunąć istniejący wyzwalacz:
 ```sql
 DROP TRIGGER [nazwa_wyzwalacza];
 ```
----
-
-```sql
-CREATE TRIGGER check_amount
-   AFTER UPDATE OF account
-      ON employees
-   BEGIN
-      IF NEW.amount < 0 THEN
-         SET NEW.amount = OLD.amount;
-      ELSEIF NEW.amount > 100 THEN
-         SET NEW.amount = 100;
-      END IF;
-END;
-```
-
-```sql
-DROP check_amount;
-```
-
 ---
 
 #### Indeksy
@@ -668,9 +1091,9 @@ CREATE {UNIQUE|FULLTEXT} INDEX [nazwa_indeksu] ON [kolumn] {USING BTREE};
 ```
 
 ```sql
-CREATE  INDEX autid ON newauthor(aut_id);
-CREATE  UNIQUE INDEX newautid ON newauthor(aut_id);
-CREATE  UNIQUE INDEX newautid ON newauthor(aut_id) USING BTREE;
+CREATE INDEX autid ON newauthor(aut_id);
+CREATE UNIQUE INDEX newautid ON newauthor(aut_id);
+CREATE UNIQUE INDEX newautid ON newauthor(aut_id) USING BTREE;
 ```
 
 ```sql
@@ -709,6 +1132,17 @@ SELECT @count;
 CREATE FUNCTION [nazwa_funkcji] ([parametr[, ...]]) RETURNS [typ] [cechy, ...]
 [kod_funkcji]
 ```
+
+---
+
+Jeżeli funkcja zwraca zawsze ten sam wynik dla tych samych parametrów, to 
+możemy ją oznaczyć jako deterministyczną za pomocą atrybutu **DETERMINISTIC**.
+
+```sql
+
+```
+
+---
 
 ```sql
 DROP FUNCTION [nazwa_funkcji];

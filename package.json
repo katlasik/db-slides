@@ -5,7 +5,7 @@
   "main": "slides.md",
   "scripts": {
     "start": "reveal-md --watch --css styles/style.css --theme theme/robot-lung.css --template index.html slides.md",
-    "print": "reveal-md --puppeteer-launch-args='--no-sandbox --disable-dev-shm-usage' --css styles/style.css --theme theme/robot-lung.css --template index.html --print db.pdf slides.md"
+    "print": "reveal-md --puppeteer-launch-args='--no-sandbox --disable-dev-shm-usage' --css styles/style.css --theme theme/robot-lung.css --template index.html --print BazyDanych.pdf slides.md"
   },
   "author": "Krzysztof Atlasik <krzysztof.atlasik@pm.me>",
   "license": "ISC"
