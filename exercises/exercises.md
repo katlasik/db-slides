@@ -176,16 +176,6 @@
   
    Dodaj przykładowe dane do tabeli **orders**.
 
-   ```sql
-   CREATE TABLE orders(
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      order_number VARCHAR(255) NOT NULL,
-      customer_name VARCHAR(1000) NOT NULL,
-      shipping_address TEXT NOT NULL,
-      sent_on DATE NOT NULL,
-      archived_on DATE NULL
-   );
-   ```
  3. Stwórz nową tabelę **items**:
  
    | Kolumna          | Typ danych |
@@ -196,25 +186,9 @@
    | order_id         | Integer    |
    
    Dodaj przykładowe dane do tabeli **items**.
-
-   ```sql
-   CREATE TABLE items(
-      id INT AUTO_INCREMENT PRIMARY KEY ,
-      name VARCHAR(255) NOT NULL,
-      price DECIMAL(10,2),
-      order_id INT REFERENCES orders(id)
-   );
-   ```
     
  4. Dodaj nową kolumnę typu **date** o nazwie **updated_on** dla tabeli **orders**.
  5. Dodaj trigger uaktualniający kolumnę **updated_on** zawsze gdy tabela **orders** jest edytowana.
-   ```sql
-   CREATE TRIGGER orders_update_trg BEFORE UPDATE ON orders
-       FOR EACH ROW
-   BEGIN
-        new.updated_on = CURRENT_TIMESTAMP
-   END;
-   ```
  6. Dodaj nową kolumnę **created_on** dla tabeli **items** i ustaw domyślną wartość na bieżący czas.
     Zrób analogiczną operację dla tabeli **orders**.
  7. Zmień nazwę tabeli **items** na **purchased_items**.
