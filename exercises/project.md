@@ -20,7 +20,7 @@
       Powinna istnieć możliwość sprawdzenia kiedy zadanie otrzymało dany status. 
       Projekt powienen zakładać, że ilość statusów może się zmienić w przyszłości.
    7. Powinna istnieć możliwość oznaczenia zadania jako anulowane.
-   8. Użytkownik powienien mieć możliwość sprawdzenia wszystkich zadań, które wykonunuje w danym momencie
+   8. Użytkownik powienien mieć możliwość sprawdzenia wszystkich zadań, które wykonywuje w danym momencie
       oraz tych które ma do wykonania.   
    9. Użytkownik powienien mieć możliwość wyszukiwania zadań po opisie.     
   10. Użytkownik powienien mieć możliwość zobaczenie ile czasu minęło odkad zadanie osiągnęło dany status.
