@@ -23,3 +23,4 @@
       oraz tych które ma do wykonania.   
    9. Użytkownik powienien mieć możliwość wyszukiwania zadań po opisie.     
   10. Użytkownik powienien mieć możliwość zobaczenie ile czasu minęło odkad zadanie osiągnęło dany status.
+  11. Użytkownik powienien mieć możliwość ustawienia zadania jako publiczne. Takie zadanie będzie mogło być widoczne publicznie.
