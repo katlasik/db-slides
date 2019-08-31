@@ -10,7 +10,7 @@
       i kiedy jego zawartość była uaktualniania.
    3. Użytkownik powienien mieć możliwość tworzenia kategorii zadań.
    4. Każde zadanie powinno należeć do jakiejś kategorii.
-   5. Użytkowik powienien mieć możliwość dodania tworzenia i dodawania tagów do zadania.
+   5. Użytkowik powienien mieć możliwość tworzenia i dodawania tagów do zadania.
       Jedno zadanie może posiadać wiele tagów lub nie posiadać żadnego.
    6. Użytkownik powienien mieć możliwość zmiany stanu zadania. Zadanie może mieć następujące stany:
        * Zaplanowane

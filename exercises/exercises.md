@@ -15,7 +15,7 @@
 
 # Struktura danych
 
-![struktura](../images/structure.png)
+![struktura](../assets/structure.png)
 
 # Zadania
 
