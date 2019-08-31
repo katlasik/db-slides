@@ -856,7 +856,7 @@
      które które nie zostały jeszcze wysłane, ani zarchiwizowane.
      ```sql
      CREATE VIEW active_orders AS (
-        SELECT * FROM orders WHERE sent_on IS NULL AND archived_on IS NULL
+        SELECT * FROM orders WHERE sent_on IS NOT NULL AND archived_on IS NOT NULL
      );
      ```
  16. Stwórz widok `orders_summaries`, który pozwala zobaczyć numer zamówienia, nazwę klienta, adres wysyłki oraz łączną kwotę zamówienia.
