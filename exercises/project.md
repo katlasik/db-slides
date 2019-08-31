@@ -16,6 +16,7 @@
        * Zaplanowane
        * W trakcie
        * Zakończone
+       
       Powinna istnieć możliwość sprawdzenia kiedy zadanie otrzymało dany status. 
       Projekt powienen zakładać, że ilość statusów może się zmienić w przyszłości.
    7. Powinna istnieć możliwość oznaczenia zadania jako anulowane.
