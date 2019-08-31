@@ -169,7 +169,6 @@
    |------------------|:----------:|
    |id                | Integer    |
    |order_number      | Varchar    |
-   |purchased_item_id | Integer    |
    |customer_name     | Varchar    |
    |shipping_address  | Varchar    |
    |sent_on           | DateTime   |
@@ -194,6 +193,7 @@
    | id               | Integer    |
    | name             | Varchar    |
    | price            | Decimal    |
+   | order_id         | Integer    |
    
    Dodaj przykładowe dane do tabeli **items**.
 
@@ -221,13 +221,12 @@
  8. Zmień nazwę kolumn **created_on** w  **orders** na **ordered_on**.
  9. Dodaj nową kolumnę **shipping_country** do tabeli **orders** z domyślną wartością "Polska".
  10. Stwórz indeks pozwalający łatwo wyszukiwać przedmioty po nazwie.
- 11. Stwórz fukcję `dayspassed` zwracająca ilość dni od kiedy przedmiot został zamówiony.
- 12. Stwórz funkcję `initcap` powodującą, że każde słowo zaczyna się od dużej litery, a reszta jego liter staje się mała.
+ 11. Stwórz fukcję `days_passed` zwracająca ilość dni od kiedy przedmiot został zamówiony.
+ 12. Stwórz funkcję `brutto` zwracającą cenę z podatkiem vat 23%.
  13. Stwórz procedurę ustawiającą **achived_on** dla wszystkich zamówień starszych od 90 dni.
- 14. Stwórz procedurę drukującą na standardowe wyjście listę etykiet z adresem w formacie: **{order_number}-{customer_name}-{shipping_address}**.
- 15. Stwórz procedurę wyszukująca zamówienia wysłane w ciągu 24 godzin.
- 16. Stwórz widok pozwalajacy zobaczyć wszystkie zamówienia, które nie zostały jeszcze wysłane, ani zarchiwizowane.
- 17. Stwórz zmaterializowany widok, który pozwala zobaczyć ile razy został zamówiony dany przedmiot.
- 18. Stwórz użytkowników bazy danych: **admin** mający pełny dostęp oraz **stats** który ma dostęp tylko do odczytu dla widoków.
+ 14. Stwórz procedurę wyszukująca zamówienia wysłane w ciągu 24 godzin i zapisującą ją do tabeli **just_sent_orders**.
+ 15. Stwórz widok pozwalajacy zobaczyć wszystkie zamówienia, które nie zostały jeszcze wysłane, ani zarchiwizowane.
+ 16. Stwórz widok, który pozwala zobaczyć jaka jest łączna wartość zamówienia, zawierającą kolumn **order_number**, **customer_name**, **total_price**.
+ 17. Stwórz użytkowników bazy danych: **shop_user** mający pełny dostęp oraz **stats_user** który ma dostęp tylko do odczytu dla widoków.
 
  
