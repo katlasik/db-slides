@@ -86,10 +86,10 @@ Zapytania **SQL** mogą także wykonywać operacje wstawiania danych, usuwania d
 
 ###### Podstawowe instrukcje to:
 
-Instrukcja  ``@@@SHOW DATABASES;@@@`` wyświetla bazy danych na serwerze. =>
-Polecenie  ``@@@USE@@@ [nazwa bazy danych]@@@;@@@`` wybiera bazę danych. =>
-Polecenie  ``@@@SHOW TABLES;@@@`` wyświetla tabele w wybranej bazie danych. =>
-Instrukcja  ``@@@DESC@@@ [nazwa tabeli]@@@;@@@`` wyświetla detale tabeli.
+Instrukcja  `@@@SHOW DATABASES;@@@` wyświetla bazy danych na serwerze. =>
+Polecenie  `@@@USE@@@ [nazwa bazy danych]@@@;@@@` wybiera bazę danych. =>
+Polecenie  `@@@SHOW TABLES;@@@` wyświetla tabele w wybranej bazie danych. =>
+Instrukcja  `@@@DESC@@@ [nazwa tabeli]@@@;@@@` wyświetla detale tabeli.
 
 ---
 
@@ -108,168 +108,20 @@ Aby połączyć z bazą danych przy pomocy **mysql** używamy polecenia:
 
 Komentarze w **SQL** pozwalają na dodawanie dodatkowych informacji do 
 
-
-`@@@#@@@ jednoliniowy`
-
-`@@@--@@@ jednoliniowy`
-
-`@@@/*@@@ 
-   blokowy
-   wieloliniowy
- @@@*/@@@`
-
-
----
-
-### Data Manipulation Language
-
----
-
-##### Dodawanie danych
-
-`
-@@@INSERT INTO@@@ [nazwa_tabeli]([kolumny...]) @@@VALUES@@@ ([wartości...])
-`
 ```sql
-INSERT INTO department(id, name, city) VALUES(10, 'ACCOUNTING', 'NEW YORK');
-INSERT INTO department VALUES(11, 'LEGAL', 'LOS ANGELES');
+# jednoliniowy
 ```
 
-Możemy też wykonywać **INSERT** za pomocą danych zwróconych przez zapytanie:
-
 ```sql
-INSERT INTO department SELECT DEPTNO, DNAME, LOC FROM migrated_department
-```
----
-
-##### Skąd sie biorą id?
-Możemy jawnie zadeklarowąć jaki **id** ma zostać użyty w insercie.
-```sql
-INSERT INTO department(id, name) VALUES(10, 'ACCOUNTING')
+-- jednoliniowy
 ```
 
-Możemy też pozostawić na bazie danych obowiązek wygenerowania klucza.
-Strategia generowania klucza zależy od bazy danych:
-  
-* poprzez wywołanie sekwencji (dla **Oracle**, **PostgreSQL**, itd.):
 ```sql
-INSERT INTO department(id, name) VALUES(dep_seq.nextval, 'ACCOUNTING')
-``` 
-  
-* poprzez stworzenie autoinkrementującej się kolumny (dla **MySQL**, **MariaDB**, itd.) oraz pozostawienie kolumny w **insercie** pustej:
-```sql
-INSERT INTO department(name) VALUES('ACCOUNTING')
+/*
+blokowy
+wieloliniowy
+*/
 ```
-
-
----
-
-##### Uaktualnianie danych
-
-`
-@@@UPDATE@@@ [nazwa tabeli]
-@@@SET@@@ [nazwa_kolumny1]=[wartość1], [nazwa_kolumny2]=[wartość2], ...
-@@@WHERE@@@ [predykat]
-`
-```sql
-UPDATE department
-SET dept_name = ’Sales’,
-manager = ’Zosia’
-WHERE dept_name = ’Finance’
-```
-```sql
-UPDATE department AS src, department AS target 
-SET target.description = src.description
-WHERE target.manager_id = src.manager_id
-```
-
----
-
-##### Usuwanie danych:
-
-Aby usunąć konkretne dane używamy **DELETE**:
-
-```sql
-DELETE FROM students WHERE id = 9
-```
-
-**TRUNCATE** usuwa wszystkie dane z tabeli i resetuje autoinkrementujące się wartości/sekwencje.
-
-```sql
-TRUNCATE TABLE students
-```
-
-Note: Truncate kasuje też sekwencje, delete będzie wymagać WHERE
-
----
-
-##### Transakcje
-
-**Transakcja** to zbiór operacji wykonywanych na bazie danych traktowanych jako jedna całość.
-
-Transakcje uznaje się za zakończoną pomyślnie jeśli udało się prawidłowo
-wykonać **wszystkie** wchodzące w jej skład operacje.
-Jeśli którakolwiek z operacji zakończyła się niepowodzeniem, to całą transakcję
-uznaje się za wykonaną nieprawidłowo.
-
-Poprawna transakcja jest **zatwierdzana** w bazie danych (ang.&nbsp;*committed*),
-a wprowadzone przez nią zmiany są widoczne dla innych procesów bazy danych.
-Niepoprawna transakcja natomiast jest wycofywana (ang. *rolled-back*),
-a wszystkie wprowadzone przez nią zmiany są anulowane.
-
----
-
-Transakcję rozpoczynamy wyrażeniem **START TRANSACTION**, a zatwierdzamy **COMMIT**:
-
-```sql
-START TRANSACTION;
-
-INSERT INTO users VALUES('Adam', 'Smith');
-INSERT INTO users VALUES('Adam', 'Johnson');
-
-COMMIT;
-```
-
-Możemy też odwołać transakcję używając słowa kluczowego **ROLLBACK**:
-
-```sql
-START TRANSACTION;
-
-UPDATE users SET name = 'John' WHERE last_name = 'Smith';
-UPDATE users SET name = 'George' WHERE last_name = 'Johnson';
-
-ROLLBACK;
-```
-
-Po wywołaniu **ROLLBACK** baza danych wraca do stanu sprzed rozpoczęcia transakcji.
-
----
-
-##### ACID
-
-**ACID** to zbiór właściwości gwarantujących poprawne przetwarzanie transakcji w bazach danych.
-
----
-
-Skrótowiec **ACID** rozwijamy jako:
-
-* **Niepodzielnosć** (ang. *atomicity*) oznacza, że wszystkie operacje wchodzące w skład transakcji muszą zostać
-wykonane poprawnie. W przeciwnym przypadku wszyskie operacje zostaną wycofane.
-* **Spójność** (ang. *consistency*) Jeżeli nie powiedzie się zmiana stanu bazy danych to 
-wraca ona do stanu sprzed rozpoczęcia transakcji (stanu spójnego).
-* **Izolacja** (ang. *isolation*) oznacza, że wszystkie operacje wykonywane w ramach jednej 
-transakcji muszą zostać odseparowane od reszty systemu aż do zatwierdzenia transakcji.
-* **Trwałość** (ang. *durability*) oznacza, że  zatwierdzane dane muszą być zapisane w sposób
-trwały, tak aby w przypadku awarii istniała możliwość przywrócenia zawartości bazy do prawidłowego stanu.
-
----
-
-Standard **SQL-92** definiuje następujące cztery poziomu izolacji transakcji:
-* **Read uncommited** - transakcja może czytać niezatwierdzone dane czyli dane zmienione przez inną transakcję, która jest dalej wykonywana.
-* **Read commited** - transakcja nie może czytać niezatwierdzonych danych. Dane aktualnie zmieniane przez inne transakcje nie mogą być odczytywane.
-* **Repetable read** - transakcja nie może zmieniać danych odczytywanych przez inną transakcję.
-* **Serializable** -transakcja ma wyłączność na odczyt i aktualizację danych. Inne transakcje nie mogą ani odczytywać, ani zapisywać tych samych
-danych. Transakcja blokuje przetwarzany zakres wierszy aż do momentu jej zakończenia.
 
 ---
 
@@ -277,27 +129,28 @@ danych. Transakcja blokuje przetwarzany zakres wierszy aż do momentu jej zakoń
 
 **Data Query Language** pozwala na pobieranie wierszy z tabel bazy danych.
 
+
 ---
 
-Podstawowe zapytanie  **SQL** pozwala pobrać kolumny z danej tabeli za pomocą słów kluczowych **SELECT** i **FROM**:
 
+Najprostszym sposobem na pobranie danych jest użycie zapytania:
 
 `@@@SELECT@@@ [kolumny] @@@FROM@@@ [tabela]`
 
-
-Na przykład możemy pobrać dane z tabeli **students**:
+Na przykład:
 
 ```sql
-SELECT * FROM students; ||1||
-SELECT id, first_name FROM students; ||2||
+SELECT name, nazwisko FROM klienci;
+SELECT * FROM klienci;
 ```
+Po **SELECT** podajemy listę kolumn, lub gwiazdkę, gdy chcemy pobrać wszystkie.
+Język **SQL** jest **case-insensitive**, to znaczy, że nie ma znaczenia wielkość liter.
 
-||1|| Używająć **\*** pobieramy wszystkie kolumny z tabeli. =>
-||2|| Pobieramy tylko kolumny **id** oraz **first_name**.
+![Mail](assets/table.png)
 
 ---
 
-Możemy ograniczyć liczbę wyników za pomocą **LIMIT** oraz przesuwać punkt startu za pomocą **OFFSET**.
+W zapytaniach **SELECT** możemy ograniczyć liczbę wyników za pomocą **LIMIT** oraz przesuwać punkt startu za pomocą **OFFSET**.
 
 `@@@SELECT * FROM@@@ [nazwa_tabeli] @@@LIMIT@@@ [ilość_wierszy] @@@OFFSET@@@ [punkt startu]@@@;@@@`
 
@@ -316,8 +169,8 @@ SELECT DISTINCT first_name FROM students;
 
 Aby nadać kolumnie inną nazwę (alias) używamy słowa kluczowego **AS** (można też je ominąć):
 
-`@@@SELECT@@@ [nazwa_kolumn] @@@AS@@@ [nowa_nazwa] @@@FROM@@@ [nazwa_tabeli]`;
-`@@@SELECT@@@ [nazwa_kolumn] [nowa_nazwa] @@@FROM@@@ [nazwa_tabeli]`;
+`@@@SELECT@@@ [nazwa_kolumn] @@@AS@@@ [nowa_nazwa] @@@FROM@@@ [nazwa_tabeli];` =>
+`@@@SELECT@@@ [nazwa_kolumn] [nowa_nazwa] @@@FROM@@@ [nazwa_tabeli];`
 
 ```sql
 SELECT first_name AS imię FROM students;
@@ -333,7 +186,7 @@ Aby ustalić kolejność wyników należy użyć słowa kluczowego **ORDER BY**:
 SELECT * FROM students ORDER BY age, first_name;
 ```
 
-Możemy kontrolować koleność sortowania danych za pomocą słów **ASC** - kolejność roznąca
+Możemy kontrolować kolejność sortowania danych za pomocą słów **ASC** - kolejność roznąca
 oraz **DESC** malejąca. **ASC** jest domyślną kolejnością.
 
 ```sql
@@ -383,7 +236,7 @@ SELECT * FROM students WHERE id NOT BETWEEN 3 AND 6;
 ```
 ---
 
-#### NULL
+##### NULL
 
 **NULL** to specjalny znacznik w języku **SQL**, wskazujący, że dana nie istnieje w bazie danych.
 Aby kolumna mogła przyjnować wartości **NULL** musi mieć ustawiony atrybut **NULLABLE**.
@@ -507,11 +360,11 @@ SELECT FORMAT(3.355555, 2) -- 3.36
 
 I inne:
 
-* **GREATEST(arg1, arg2, ...)** - zwraca największy element.
+* **GREATEST(arg1, arg2, ...)** - zwraca największy element (w przypadku tekstu jest używana kolejność alfabetyczna).
 ```sql
 SELECT GREATEST('zero', 'raz', 'dwa')
 ```
-* **LEAST(arg1, arg2, ...)** - zwraca najmniejszy element element.
+* **LEAST(arg1, arg2, ...)** - zwraca najmniejszy element (w przypadku tekstu jest używana kolejność alfabetyczna).
 * **COALESCE(arg1, arg2, ...)** - zwraca pierwszy argument, który nie jest nullem.
 ```sql
 SELECT 
@@ -524,7 +377,7 @@ FROM division d
 
 Wyrażenia **CASE** możemy użyć do zamiany (translacji) wyniku na inny.
 
-Możemy wybrać wartość do używając warunku:
+Możemy wybrać wartość używając warunku:
 
 ```sql
 SELECT
@@ -541,7 +394,8 @@ Możemy użyć również wersji z dowolnym predykatem:
 ```sql
 SELECT
     CASE
-        WHEN age < 18 THEN 'Forbidden'
+        WHEN age < 12 THEN 'Too young'
+        WHEN age > 18 THEN 'Too old'
         ELSE 'Ok'
     END
 FROM children;
@@ -553,17 +407,16 @@ FROM children;
 
 Wyniki możemy agregować za pomocą słowa kluczowego **GROUP BY** i funkcji agregującej:
 
-* **COUNT(kolumna)** - liczy wyniki w grupie
-* **SUM(kolumna)** - sumuje wyniki w grupie
+* **COUNT(kolumna)** - liczy wyniki w grupie.
+* **SUM(kolumna)** - sumuje wyniki w grupie.
 * **MIN(kolumna)** - wyznacza minimalną wartość w grupie.
 * **MAX(kolumna)** - wyznacza minimalną wartość w grupie.
 * **AVG(kolumna)** - wyznacza średnią wartość w grupie.
 
-`
-@@@SELECT@@@ [kolumna_grupująca1,kolumna_grupująca2, ...],[nazwa_funkcji(kolumna)] 
-@@@FROM@@@ [tabela] 
-@@@GROUP BY@@@ [kolumna_grupująca1, kolumna_grupująca2, ...]@@@;@@@
-`
+
+`@@@SELECT@@@ [kolumna_grupująca1,kolumna_grupująca2, ...],[nazwa_funkcji(kolumna)] @@@FROM@@@ [tabela]` =>
+`@@@GROUP BY@@@ [kolumna_grupująca1, kolumna_grupująca2, ...]@@@;@@@`
+
 
 ---
 
@@ -821,17 +674,13 @@ FROM external_employees
 
 Relacja między jedną encją, a druga. W bazie relacyjnej oznacza, że jedna tabela posiada klucz obcy do drugiej tabeli.
 
-![one-to-one](/assets/one-to-one.png)
-
-![one-to-one](/assets/one-to-one-table.png)
+![one-to-one:=](/assets/one-to-one-table.png)
 
 ---
 
 ##### Jeden do wielu
 
 Relacja między jedną encją, a wieloma. W bazie relacyjnej modelowana identycznie jak relacja jeden do jeden.
-
-![one-to-many](/assets/one-to-many.png)
 
 ![one-to-one](/assets/one-to-many-table.png)
 
@@ -840,8 +689,6 @@ Relacja między jedną encją, a wieloma. W bazie relacyjnej modelowana identycz
 ##### Wiele do wielu
 
 Relacja między wieloma encjami, a wieloma. W bazie relacyjnej modelowana za pomocą dodatkowej tabeli.
-
-![many-to-many](/assets/many-to-many.png)
 
 ![one-to-one](/assets/many-to-many-table.png)
 
@@ -885,27 +732,30 @@ Wyrażenia **CTE** mają zakres tylko jednego zapytania (w kolejnych zapytaniach
 Możemy tworzyć również rekurencyjne podzapytania **CTE**.
 
 ```sql
-WITH RECURSIVE days AS (
+WITH RECURSIVE days AS ( ||1||
     SELECT CURRENT_DATE AS day
     UNION ALL
     SELECT DATE_ADD(day, INTERVAL 1 DAY) AS day
-    FROM days
-    WHERE day < DATE_ADD(CURRENT_DATE, INTERVAL 10 DAY)
+    FROM days ||2||
+    WHERE day < DATE_ADD(CURRENT_DATE, INTERVAL 10 DAY) ||3||
 ) SELECT * FROM days
 ```
+
+||1|| Po słowie kluczowym **WITH** musimy użyć słowa kluczowego **RECURSIVE**. =>
+||2|| W zapytaniu rekurencyjnie odwołujemy się do właśnie tworzonego **CTE**. =>
+||3|| Aby zapytanie rekurencyjne było skończone musimy dodać warunek końcowy.
+
 ---
 
 ##### SQL Window Functions
 
 **Window functions** pozwalają nam wykowynywać agregacje, które nie wpływają na resztę zapytania.
 
-`
-@@@SELECT@@@ [kolumna1, kolumna2, ...]@@@,@@@
-@@@funkcja({arg1, arg2, ...})@@@ 
-@@@OVER (PARTITION BY@@@ [kolumna1, kolumn2, ...] 
-@@@ORDER BY@@@ [kolumna1, kolumn2, ...]@@@)@@@
-@@@FROM@@@ [tabela]
-`
+`@@@SELECT@@@ [kolumna1, kolumna2, ...]@@@,@@@` =>
+`funkcja(arg1, arg2, ...)`  =>
+`@@@OVER (PARTITION BY@@@ [kolumna1, kolumn2, ...]` => 
+`@@@ORDER BY@@@ [kolumna1, kolumn2, ...]@@@)@@@` =>
+`@@@FROM@@@ [tabela]`
 
 ```sql
 SELECT 
@@ -951,8 +801,161 @@ FROM films f
 
 ---
 
+### Data Manipulation Language
+
+**Data Manipulation Language** pozwala na dodawanie, modyfikowanie i usuwanie danych.
+
+
+---
+
+##### Dodawanie danych
+
+`
+@@@INSERT INTO@@@ [nazwa_tabeli]([kolumny...]) @@@VALUES@@@ ([wartości...])
+`
+```sql
+INSERT INTO department(id, name, city) VALUES(10, 'ACCOUNTING', 'NEW YORK');
+INSERT INTO department VALUES(11, 'LEGAL', 'LOS ANGELES');
+```
+
+Możemy też wykonywać **INSERT** za pomocą danych zwróconych przez zapytanie:
+
+```sql
+INSERT INTO department SELECT number, name, localization FROM migrated_department
+```
+---
+
+##### Skąd sie biorą id?
+Możemy jawnie zadeklarowąć jaki **id** ma zostać użyty w insercie.
+```sql
+INSERT INTO department(id, name) VALUES(10, 'ACCOUNTING')
+```
+
+Możemy też pozostawić na bazie danych obowiązek wygenerowania klucza.
+Strategia generowania klucza zależy od bazy danych:
+  
+* poprzez wywołanie sekwencji (dla **Oracle**, **PostgreSQL**, itd.):
+```sql
+INSERT INTO department(id, name) VALUES(dep_seq.nextval, 'ACCOUNTING')
+``` 
+  
+* poprzez stworzenie autoinkrementującej się kolumny (dla **MySQL**, **MariaDB**, itd.) oraz pozostawienie kolumny w **insercie** pustej:
+```sql
+INSERT INTO department(name) VALUES('ACCOUNTING')
+```
+
+
+---
+
+##### Uaktualnianie danych
+
+`
+@@@UPDATE@@@ [nazwa tabeli]
+@@@SET@@@ [nazwa_kolumny1]=[wartość1], [nazwa_kolumny2]=[wartość2], ...
+@@@WHERE@@@ [predykat]
+`
+```sql
+UPDATE department
+SET dept_name = ’Sales’,
+manager = ’Zosia’
+WHERE dept_name = ’Finance’
+```
+```sql
+UPDATE department AS src, department AS target 
+SET target.description = src.description
+WHERE target.manager_id = src.manager_id
+```
+
+---
+
+##### Usuwanie danych:
+
+Aby usunąć konkretne dane używamy **DELETE**:
+
+```sql
+DELETE FROM students WHERE id = 9
+```
+
+**TRUNCATE** usuwa wszystkie dane z tabeli i resetuje autoinkrementujące się wartości/sekwencje.
+
+```sql
+TRUNCATE TABLE students
+```
+
+Note: Truncate kasuje też sekwencje, delete będzie wymagać WHERE
+
+---
+
+##### Transakcje
+
+**Transakcja** to zbiór operacji wykonywanych na bazie danych traktowanych jako jedna całość.
+
+Transakcje uznaje się za zakończoną pomyślnie jeśli udało się prawidłowo
+wykonać **wszystkie** wchodzące w jej skład operacje.
+Jeśli którakolwiek z operacji zakończyła się niepowodzeniem, to całą transakcję
+uznaje się za wykonaną nieprawidłowo.
+
+Poprawna transakcja jest **zatwierdzana** w bazie danych (ang.&nbsp;*committed*),
+a wprowadzone przez nią zmiany są widoczne dla innych procesów bazy danych.
+Niepoprawna transakcja natomiast jest wycofywana (ang. *rolled-back*),
+a wszystkie wprowadzone przez nią zmiany są anulowane.
+
+---
+
+Transakcję rozpoczynamy wyrażeniem **START TRANSACTION**, a zatwierdzamy **COMMIT**:
+
+```sql
+START TRANSACTION;
+
+INSERT INTO users VALUES('Adam', 'Smith');
+INSERT INTO users VALUES('Adam', 'Johnson');
+
+COMMIT;
+```
+
+Możemy też odwołać transakcję używając słowa kluczowego **ROLLBACK**:
+
+```sql
+START TRANSACTION;
+
+UPDATE users SET name = 'John' WHERE last_name = 'Smith';
+UPDATE users SET name = 'George' WHERE last_name = 'Johnson';
+
+ROLLBACK;
+```
+
+Po wywołaniu **ROLLBACK** baza danych wraca do stanu sprzed rozpoczęcia transakcji.
+
+---
+
+**ACID** to zbiór właściwości gwarantujących poprawne przetwarzanie transakcji w bazach danych.
+
+Skrótowiec **ACID** rozwijamy jako:
+
+* **Niepodzielnosć** (ang. *atomicity*) oznacza, że wszystkie operacje wchodzące w skład transakcji muszą zostać
+wykonane poprawnie. W przeciwnym przypadku wszyskie operacje zostaną wycofane.
+* **Spójność** (ang. *consistency*) Jeżeli nie powiedzie się zmiana stanu bazy danych to 
+wraca ona do stanu sprzed rozpoczęcia transakcji (stanu spójnego).
+* **Izolacja** (ang. *isolation*) oznacza, że wszystkie operacje wykonywane w ramach jednej 
+transakcji muszą zostać odseparowane od reszty systemu aż do zatwierdzenia transakcji.
+* **Trwałość** (ang. *durability*) oznacza, że  zatwierdzane dane muszą być zapisane w sposób
+trwały, tak aby w przypadku awarii istniała możliwość przywrócenia zawartości bazy do prawidłowego stanu.
+
+---
+
+Standard **SQL-92** definiuje następujące cztery poziomu izolacji transakcji:
+* **Read uncommited** - transakcja może czytać niezatwierdzone dane czyli dane zmienione przez inną transakcję, która jest dalej wykonywana.
+* **Read commited** - transakcja nie może czytać niezatwierdzonych danych. Dane aktualnie zmieniane przez inne transakcje nie mogą być odczytywane.
+* **Repetable read** - transakcja nie może zmieniać danych odczytywanych przez inną transakcję.
+* **Serializable** -transakcja ma wyłączność na odczyt i aktualizację danych. Inne transakcje nie mogą ani odczytywać, ani zapisywać tych samych
+danych. Transakcja blokuje przetwarzany zakres wierszy aż do momentu jej zakończenia.
+
+---
+
 
 ### Data definition language
+
+**Data definition language** pozwala na manipulowanie strukturą tabel.
 
 ---
 
@@ -997,7 +1000,7 @@ DROP TABLE employee;
 
 ---
 
-###### Uaktualnianie tabeli
+##### Uaktualnianie tabeli
 
 `@@@ALTER TABLE@@@ [nazwa tabeli] [operacja]@@@;@@@`
 
@@ -1027,7 +1030,7 @@ ALTER TABLE department DROP COLUMN description;
 
 ---
 
-#### Atrybuty kolumn
+##### Atrybuty kolumn
 
 * **NULL / NOT NULL** - atrybut określa czy kolumna może czy nie może przyjmować wartości **NULL**.
 * **UNIQUE** - atrybut określa, że kolumna może przechowywać tylko unikalne wartości.
@@ -1105,7 +1108,7 @@ Najpopularniesze opcje to:
 
 ---
 
-#### Widoki
+##### Widoki
 
 **Widok** (zwany również wirtualną tabelą, ang. *view*) składa się ze zbioru wierszy
 zwracanych w wyniku wykonania określonego zapytania SQL. Widok **nie stanowi kopii danych** reprezentowanych przez zapytanie.
@@ -1134,7 +1137,7 @@ Aby usunąć widok, używamy **DROP**:
 CREATE VIEW active_customers AS (
     SELECT name, phone, address
     FROM customers
-    JOIN customers.status_id = statuses.id
+    JOIN statuses ON customers.status_id = statuses.id
     WHERE status.name = 'ACTIVE'
 );
 ```
@@ -1146,7 +1149,7 @@ SELECT * FROM active_customer WHERE phone LIKE '505%';
 ```
 ---
 
-#### Indeksy
+##### Indeksy
 
 Indeksy to dodatkowe struktury dazy danych definiowane dla konkretnych kolumn.
 
@@ -1225,7 +1228,7 @@ END
 
 ---
 
-#### Cechy fukcji
+##### Cechy fukcji
 
 * **DETERMINISTIC&nbsp;/&nbsp;NOT&nbsp;DETERMINISTIC** - jeżeli funkcja zwraca zawsze ten sam wynik dla tych samych parametrów, to 
 możemy ją oznaczyć jako deterministyczną za pomocą atrybutu **DETERMINISTIC**. Jeżeli wynik może być inny
@@ -1255,14 +1258,14 @@ END$$
 DELIMITER ; ||1||
 ```
 
-||1|| Aby możliwe było używanie średnika w środku blogu **BEGIN&nbsp;..&nbsp;END** musimy też zdefiniować tymczasowo 
+||1|| Aby możliwe było używanie średnika w środku bloku **BEGIN&nbsp;..&nbsp;END** musimy też zdefiniować tymczasowo 
      inny ogranicznik, który musi zostać użyty do oznaczenia końca ciała funkcji. Do tego celu używane
      jest polecenie **DELIMETER**. Na koniec deklaracji funkcji należy przywrócić **delimiter** do domyślnej wartości. =>
 ---
 
-#### Zmienne
+##### Zmienne
 
-Zmienne możemy deklarować za pomocą *DECLARE* oraz ustawiać za pomocą *SET*:
+Zmienne możemy deklarować za pomocą **DECLARE** oraz ustawiać za pomocą **SET**:
 
 ```sql
 DECLARE result CHAR(500);
@@ -1319,7 +1322,7 @@ END IF;
 
 ---
 
-#### Procedury
+##### Procedury
 
 `@@@CREATE PROCEDURE@@@ [nazwa_procedury] ([parametr[, ...]])
 [kod procedury]`
@@ -1329,8 +1332,14 @@ Wynik z procedury może zwrócić za pomocą parametrów oznaczonych jako jako *
 jako **IN** działają w ten sam sposób jak parametry funkcji. 
 
 ```sql
+DELIMITER $$ 
+
 CREATE PROCEDURE get_data(IN product_number CHAR(8), OUT count INT)
-SELECT COUNT(*) FROM products WHERE product = product_number INTO count;
+BEGIN
+    SELECT COUNT(*) FROM products WHERE product = product_number INTO count;
+END
+
+DELIMITER ;
 ```
 
 ---
@@ -1372,8 +1381,8 @@ Wyzwalacz dodajemy używając **CREATE TRIGGER**:
 `@@@CREATE TRIGGER@@@ [nazwa_wyzwalacza]
 { @@@BEFORE@@@ | @@@AFTER@@@ }
 { @@@INSERT@@@ | @@@UPDATE@@@ | @@@DELETE@@@ }
-@@@ON@@@ [nazwa_tabeli]
-@@@FOR EACH ROW@@@
+@@@ON@@@ [nazwa_tabeli]` =>
+`@@@FOR EACH ROW@@@
 [instrukcja/instrukcje_do_wykonania]@@@;@@@`
 
 Możemy też usunąć istniejący wyzwalacz:
@@ -1395,7 +1404,26 @@ END;
 ```
 ---
 
+##### Instrukcje warunkowe
+
+Do każdej instrukcji **DDL** możemy dodać przełącznik warunkowy:
+ 
+* **IF EXISTS** - operacja wykona się tylko wtedy, gdy docelowy element istnieje w bazie danych:
+```sql
+CREATE TABLE IF NOT EXISTS tasks (
+    task_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL
+);
+```
+* **IF NOT EXISTS** - operacja wykona się tylko wtedy, gdy docelowy element nie istnieje w bazie danych:
+```sql
+DROP TABLE IF EXISTS tasks;
+```
+---
+
 ### Data control language
+
+**Data control language** pozwala na manipulację uprawnieniami użytkowników bazy danych.
 
 ---
 
@@ -1459,14 +1487,14 @@ REVOKE INSERT ON employees.dept FROM john; ||5||
 
 ---
 
-### Normalizacja bazy danych
+##### Normalizacja bazy danych
 
 **Normalizacja** to proces organizowania danych w bazie danych. Obejmuje to tworzenie tabel i ustanawianie relacji między tymi tabelami zgodnie z regułami opracowanymi w celu zarówno ochrony danych, jak i zapewnienia większej elastyczności bazy danych przez wyeliminowanie nadmiarowości i niespójnych zależności.
 
 
 ---
 
-#### Pierwsza postać normalna 1NF
+##### Pierwsza postać normalna 1NF
 
 Tabela jest w pierwszej postaci normalnej gdy pojedyncze pole tabeli zawiera informacje elementarną.
 
@@ -1474,7 +1502,7 @@ Tabela jest w pierwszej postaci normalnej gdy pojedyncze pole tabeli zawiera inf
 
 ---
 
-### Druga postać normalna 2NF
+##### Druga postać normalna 2NF
 
 Tabela jest w drugiej postaci normalnej jeśli przechowuje dane dotyczące tylko jednej klasy obiektów.
 
@@ -1482,7 +1510,7 @@ Tabela jest w drugiej postaci normalnej jeśli przechowuje dane dotyczące tylko
 
 ---
 
-### Trzecia postać normalna 3NF
+##### Trzecia postać normalna 3NF
 
 
 W trzeciej postaci normalnej żaden atrybut nie będący częścią klucza nie zależy od innego atrybutu nie będącego częścią klucza.

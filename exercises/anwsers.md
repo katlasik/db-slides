@@ -1,24 +1,25 @@
 ### Pobieranie danych
  
- 1. Pobierz wszyskie dane z tabeli students.
+ 1. Pobierz wszyskie dane z tabeli **students**.
  
    ```sql
    SELECT * FROM students
    ```
  
- 2. Wyszukaj tylko imiona i nazwiska uczniów w tabeli students.
+ 2. Wyszukaj tylko imiona i nazwiska uczniów w tabeli **students**.
    
    ```sql
    SELECT first_name, last_name FROM students
    ``` 
 
  3. Wyszukaj id oraz imiona i nazwiska nauczycieli w tabeli **teachers**.
+ 
    ```sql
    SELECT id, first_name, last_name FROM teachers
    ``` 
-
  
- 4. Wyszukaj nazwiska i imiona nauczycieli w tabeli **teachers** oraz posortuj wyniki alfabetycznie po nazwisku i imieniu.
+ 4. Wyszukaj nazwiska i imiona nauczycieli w tabeli **teachers** oraz posortuj wyniki alfabetycznie najpierw po nazwisku, a potem po imieniu.
+ 
    ```sql
    SELECT last_name, first_name FROM teachers ORDER BY last_name, first_name
    ``` 
@@ -30,38 +31,45 @@
    ```  
  
  6. Znajdź 5 najlepszych ocen i daty ich otrzymania z tabeli **student_notes**.
+ 
    ```sql
-   SELECT value as  note, received_at FROM student_notes ORDER BY value DESC LIMIT 5;   
+   SELECT value as note, received_at FROM student_notes ORDER BY value DESC LIMIT 5;   
    ```
 
  7. Znajdź kolejne 5 najlepszych ocen i daty ich otrzymania z tabeli **student_notes**.
+ 
    ```sql
-   SELECT value as  note, received_at FROM student_notes ORDER BY value DESC LIMIT 5 OFFSET 5;   
+   SELECT value as note, received_at FROM student_notes ORDER BY value DESC LIMIT 5 OFFSET 5;   
    ```
  
  8. Znajdź 5 najgorszych ocen i daty ich otrzymania z tabeli **student_notes**.
+ 
    ```sql
-   SELECT value as  note, received_at FROM student_notes ORDER BY value LIMIT 5 OFFSET 5;   
+   SELECT value as note, received_at FROM student_notes ORDER BY value LIMIT 5 OFFSET 5;   
    ```
    
 ### Filtrowanie danych
 
  1. Wyszukaj dane w tabeli **students** ucznia, którego id to 3.
+ 
    ```sql
    SELECT * FROM students WHERE id = 3;   
    ``` 
  
  2. Wyszukaj dane w tabeli **students**, tak aby pobrać tylko uczniów, których imię to Szymon.
+ 
    ```sql
    SELECT * FROM students WHERE first_name = 'Szymon'
    ```
 
  3. Wyszukaj dane w tabeli **students**, tak aby pobrać tylko uczniów, których imię to Szymon albo Krystyna.
+ 
    ```sql
    SELECT * FROM students WHERE birthdate < '1999-01-01'
    ```
 
  4. Wyszukaj dane w tabeli **students**, tak aby pobrać tylko uczniów urodzonych przed 1 stycznia 1999 roku.
+ 
    ```sql
    SELECT * FROM students WHERE birthdate < '1999-01-01'
    ```
@@ -72,12 +80,11 @@
    SELECT * FROM students WHERE birthdate < '1999-01-01' AND birthdate > '1998-01-01'
    ```
 
- 6. Znajdź imiona 3 nastarszych uczniów w tabeli **students** urodzonych po 1 stycznia 1996 roku.
+ 6. Znajdź imiona 3 najstarszych uczniów w tabeli **students** urodzonych po 1 stycznia 1996 roku.
 
    ```sql
-   SELECT * FROM students WHERE birthdate > '1996-01-01' ORDER BY birthdate
+   SELECT * FROM students WHERE birthdate > '1996-01-01' ORDER BY birthdate LIMIT 3
    ```
- 
  
  7. Znajdź uczniów, których nazwiska zaczynają się do *Ko*.
 
@@ -105,13 +112,13 @@
    SELECT CONCAT(first_name, ' ', last_name) as name FROM students WHERE last_name LIKE 'Ko%'
    ```
  
- 2. Zwróć inicjały uczniów jako kolumnę **shortcut**.
+ 2. Zwróć inicjały uczniów jako kolumnę **shortcut** (Andrzej Nowacki -> A.N.).
    
    ```sql
-   SELECT CONCAT(SUBSTRING(first_name,1,1), '.', SUBSTRING(last_name,1,1), '.') as name FROM students
+   SELECT CONCAT(SUBSTRING(first_name,1,1), '.', SUBSTRING(last_name,1,1), '.') as shortcut FROM students
    ```
 
- 3. Zwróć imiona nauczycieli napisane z dużych liter.
+ 3. Zwróć całe imiona nauczycieli napisane dużymi literami.
     
     ```sql
     SELECT UPPER(first_name) as name FROM teachers
@@ -120,7 +127,7 @@
  4. Zwróć imię, nazwisko i rok urodzenia danego ucznia.
 
     ```sql
-    SELECT first_name, last_name, year(birthdate) as birthyear FROM students
+    SELECT first_name, last_name, year(birthdate) as birth_year FROM students
     ```
 
  5. Zwróc bieżącą datę.
@@ -141,7 +148,6 @@
     SELECT DATEDIFF(DATE('2020-12-31'), CURRENT_DATE)
     ```
 
-
  8. Zwróć oceny uczniów razem z ilością dni jako upłynęła od ich otrzymania.
 
     ```sql
@@ -154,23 +160,23 @@
     SELECT name, COALESCE(description, 'brak opisu') FROM school_classes;
     ```
 
- 10. Pobierz wartość oraz datę otrzymania oceny, ale jeżeli ocena została wystawiona przed 1 stycznia 2019,
-     to przyjmij tą datę.
+ 10. Pobierz wartość oraz datę otrzymania oceny, ale jeżeli ocena została wystawiona przed 1 czerwca 2019, to przyjmij tą datę.
  
      ```sql
-     SELECT value, GREATEST(received_at, DATE('2019-01')) FROM school_notes;
+     SELECT value, GREATEST(received_at, DATE('2019-06-01')) FROM student_notes;
      ```
     
- 11. Pobierz oceny i zastąp oceny 1,2 napisem `niska`, 3,4 `średnia` oraz 5,6 `wysoka`. 
+ 11. Pobierz oceny i dodaj opis oceny: dla 1,2 opis `niska`, 3,4 `średnia` oraz 5,6 `wysoka`. 
     
      ```sql
      SELECT
-        CASE
-            WHEN VALUE IN(1,2) THEN 'niska'
-            WHEN VALUE IN(3,4) THEN 'średnia'
-            WHEN VALUE IN(5,6) THEN 'wysoka'
-        END
-     FROM student_notes;
+         value,
+     	 CASE
+     		WHEN value IN(1,2) THEN 'niska'
+     		WHEN value IN(3,4) THEN 'średnia'
+     		WHEN value IN(5,6) THEN 'wysoka'
+     	E ND AS description
+      FROM student_notes;
      ```    
  12. Stwórz zapytanie zwracające imię i nazwisko 3 losowych uczniów.
  
@@ -206,7 +212,7 @@
  
  5. Znajdź długość najkrótszego nazwiska ucznia.
     ```sql
-    SELECT MAX(LENGHT(last_name)) AS LONGEST FROM students;
+    SELECT MIN(LENGTH(last_name)) AS LONGEST FROM students;
     ```
  
  6. Wyznacz najlepszą i najgorszą ocenę wystawioną w danym miesiącu.
@@ -229,7 +235,7 @@
 ### Podzapytania
  1. Znajdź imię i nazwisko uczniów, których wiek jest powyżej przeciętnego wieku.
     ```sql
-    SELECT first_name, laste_name FROM students WHERE DATEDIFF(CURRENT_DATE, birthdate) > (
+    SELECT first_name, last_name FROM students WHERE DATEDIFF(CURRENT_DATE, birthdate) > (
         SELECT AVG(DATEDIFF(CURRENT_DATE, birthdate)) FROM students
     )
     ```
@@ -241,6 +247,7 @@
     ```
     
  3. Znajdź przedmioty, których średnia ocen jest wyższa niż średnia ocen dla wszystkich przedmiotów.
+ 
     ```sql
     SELECT *
     FROM school_classes WHERE id = ANY (
@@ -293,11 +300,11 @@
        GROUP BY first_name, last_name
      ) averages
      ```
-  7. Znajdź uczniów, którzy ze wszystkich przedmiotów dostali średnią powyżej 3.5.
+  7. Znajdź uczniów, którzy ze wszystkich przedmiotów dostali średnią powyżej 2.5.
    
      ```sql
      SELECT * FROM students WHERE
-     3.5 < ANY(SELECT AVG(value) FROM student_notes WHERE student_id = students.id GROUP BY school_class_id);
+     2.5 < ALL(SELECT AVG(value) FROM student_notes WHERE student_id = students.id GROUP BY school_class_id);
      ```
       
   8. Znajdź uczniów, którzy przynajmniej z jednego przedmiotu dostatli średnią poniżej 2.5.
@@ -328,6 +335,7 @@
 
  3. Wyświetl listę uczniów wzraz z ocenami, datami otrzymania tych ocen oraz przedmiotami na których zostały otrzymane. 
     Posortuje dane alfebetycznie po imionach uczniów, a potem chronologicznie od najstarszej otrzymanej oceny. 
+    Dodatkowo wyświetl ocenę jako ilość gwiazdek, na przykład **3** -> \***\*.
     Może występować wiele wierszy na ucznia.
  
     ```sql
@@ -335,7 +343,6 @@
     FROM students s
              LEFT JOIN student_notes sn ON sn.student_id = s.id
     ORDER BY s.first_name, s.last_name, sn.received_at
-
     ```
  4. Wyświetl listę nauczycieli wraz z listą wystawionych przez nich ocen wraz z datami. 
        Posortuj po nazwisku nauczyciela alfabetycznie, a potem od nastarszej oceny.
@@ -360,7 +367,7 @@
      WHERE host.id != guest.id
      ```
  
- 6. Znajdź najlepszą ocenę jaką dostał uczeń. Zwróć dwie kolumny: uczeń i ocena. Jeżeli uczęń nie dostał żadnej oceny wyświetl *---*.
+ 6. Znajdź najlepszą ocenę jaką dostał uczeń. Zwróć dwie kolumny: uczeń i ocena. Jeżeli uczeń nie dostał żadnej oceny wyświetl *---*.
   
      ```sql
      SELECT CONCAT(first_name, ' ', last_name), MAX(value) AS best
@@ -368,7 +375,8 @@
      JOIN students ON students.id = student_notes.student_id 
      GROUP BY CONCAT(first_name, ' ', last_name)
      ``` 
- 7. Wyznacz średnią ocen każdego ucznia. Zaokrąglij średnią do jednego miejsca po przecinku.
+ 7. Wyznacz średnią ocen każdego ucznia. Zaokrąglij średnią do jednego miejsca po przecinku. Wyświetl dane w formacie
+        imię i nazwisko ucznia, średnia ocen. Zaokrąglij średnią do jednego miejsca po przecinku.
   
      ```sql
      SELECT first_name, last_name, ROUND(AVG(value),1) AS avg 
@@ -406,8 +414,8 @@
          averages.avg < (SELECT avg(value) FROM student_notes)   
      ```
   
-  10. Wyświetl listę przedmiotów z następującymi kolumnami: nazwa, opis (w przypadku braku opisu wyświetl *"---"*), ilość uczniów która uczęszcza na dany
-           przedmiot, nauczyciel, który uczy danego przedmiotu, najlepsza i najgorsza ocena.
+  10. Wyświetl listę przedmiotów z następującymi kolumnami: nazwa, opis (w przypadku braku opisu wyświetl *"---"*),
+      ilość uczniów która uczęszcza na dany przedmiot, nauczyciel, który uczy danego przedmiotu, najlepsza i najgorsza ocena.
            
        ```sql
        SELECT
@@ -438,7 +446,9 @@
          GROUP BY school_classes.teacher_id
      ) note_counts ON note_counts.teacher_id = teachers.id
      ```
- 12. Wyświetl średnią uczniów osobno dla każdego przedmiotu w formacie uczeń (imię i nazwisko, przedmiot, średnia). 
+     
+ 12. Wyświetl średnią uczniów osobno dla każdego przedmiotu w formacie uczeń (imię i nazwisko, przedmiot, średnia).
+  
      ```sql
      SELECT s.first_name, s.last_name, sc.name AS school_class, avg_note FROM (
        SELECT AVG(value) AS avg_note, student_id, school_class_id
@@ -448,6 +458,7 @@
      RIGHT JOIN students s on averages.student_id = s.id
      LEFT JOIN school_classes sc on averages.school_class_id = sc.id
      ```
+     
  13. Wyświetl średnią uczniów w formacie uczeń (imię i nazwisko, przedmiot, średnia).
      Średnią oblicz metodą średniej ważonej: matematyka 2, fizyka i chemia 1.5, WOS 1.  
      
@@ -546,9 +557,8 @@
     ) SELECT * FROM first_days;
     ```
   
- 4. Stwórz ranking zawierający najlepszą ocenę według miesiąca. Nawet jeżeli dla danego
-      miesiąca nie ma żadnych ocen to miesiąc powinien zostać wyświetlony.
-  
+ 4. Stwórz ranking zawierający najlepszą ocenę oraz ucznia który ją uzyskał według miesiąca. Nawet jeżeli dla danego miesiąca nie ma żadnych ocen to miesiąc powinien zostać wyświetlony.
+   
     ```sql
     WITH months AS (
           SELECT 1 AS month
@@ -600,7 +610,8 @@
     ORDER BY month
     ```
      
- 5. Wyświetl choinkę.
+ 5. Narysuj choinkę używając rekurencyjnego zapytania **WITH RECURSIVE**:
+ 
     ```sql
     WITH RECURSIVE numbers AS (
         SELECT 1 AS lvl
@@ -684,11 +695,12 @@
     Sprawdź czy jest możliwe usunięcie rekordu, który jest kluczem obcym w innych tabelach.
     ```sql
     DELETE FROM teachers WHERE id = 2;
+    DELETE FROM teachers WHERE id = 6;
     ```
  
  6. Spróbuj usunąć wszystkie rekordy z tabeli **student_notes**.
     ```sql
-    DELETE FROM student_notes;
+    TRUNCATE student_notes;
     ```
  7. Pobierz wszystkie imiona i nazwiska nauczycieli i dodaj je do tabeli **students**.
     Urodziny wpisz na stałe `1980-01-01` (trudniejsze: wygeneruj urodziny jako losową datę w wybranym przez siebie zakresie).
@@ -713,36 +725,48 @@
     
  2. Stwórz nową tabelę **orders**:
  
-    | Kolumna          | Typ danych |
-    |------------------|:----------:|
-    |id                | Integer    |
-    |order_number      | Varchar    |
-    |customer_name     | Varchar    |
-    |shipping_address  | Varchar    |
-    |sent_on           | DateTime   |
-    |archived_on       | DateTime   |
+    | Kolumna          | Typ danych    |
+    |------------------|:-------------:|
+    |id                | Integer       |
+    |order_number      | Varchar(255)  |
+    |customer_name     | Varchar(1000) |
+    |shipping_address  | Varchar(1000) |
+    |sent_on           | DateTime      |
+    |archived_on       | DateTime      |
   
-    Dodaj przykładowe dane do tabeli **orders**.
-   
+    Dodaj przykładowe dane do tabeli **orders**:
+    
+    | order_number  | customer_name | shipping_address                 | sent_on             | archived_on         |
+    |--------------:|:-------------:|:--------------------------------:|:-------------------:|:--------------------|
+    | 100           |	Krzysiek    |  Jagiellońska 2, Częstochowa     | 2020-03-02 21:50:43 | 2020-03-04 21:50:55 |
+    | 101           |	Anna 	    |  Zdrowa 44, Siemianowice Śląskie | 2020-02-01 21:51:40 |                     |
+
     ```sql
     CREATE TABLE orders(
         id INT AUTO_INCREMENT PRIMARY KEY,
         order_number VARCHAR(255) NOT NULL,
         customer_name VARCHAR(1000) NOT NULL,
-        shipping_address VARCHAR NOT NULL,
+        shipping_address VARCHAR(1000) NOT NULL,
         sent_on DATETIME NULL,
         archived_on DATETIME NULL 
     );
     ```
+    
  3. Stwórz nową tabelę **items**:
  
-    | Kolumna          | Typ danych |
-    |------------------|:----------:|
-    | id               | Integer    |
-    | name             | Varchar    |
-    | price            | Decimal    |
+    | Kolumna          | Typ danych      |
+    |------------------|:---------------:|
+    | id               | Integer         |
+    | name             | Varchar(255)    |
+    | price            | Decimal         |
    
-    Dodaj przykładowe dane do tabeli **items**.
+    Dodaj przykładowe dane do tabeli **items**:
+    
+    | name            | price              |
+    | --------------- |:------------------:|
+    | Młotek          | 22.0               |
+    | Suszarka        | 100.4              |
+    | Długopis        | 99.4               |
     
     ```sql    
     CREATE TABLE items(
@@ -792,74 +816,44 @@
         shipping_country VARCHAR(300) DEFAULT 'Polska'
     );
     ```
- 10. Stwórz indeks pozwalający łatwo wyszukiwać przedmioty po nazwie.
+ 10. Wykonaj zapytania:
+      
+     ```sql
+     SELECT * FROM items WHERE name = 'Długopis';
+     SELECT * FROM items WHERE name LIKE 'D%';
+     ``` 
+     
+     Sprawdź plany zapytań. Stwórz indeks pozwalający łatwo wyszukiwać przedmioty po nazwie. Sprawdź jak zmieniły się plany zapytania.
      
      ```sql
      CREATE INDEX items_name_index ON items(name);
      ```
     
- 11. Stwórz fukcję `dayspassed` zwracająca ilość dni od kiedy przedmiot został zamówiony.
+ 11. Stwórz fukcję **days_passed** zwracająca ilość dni od kiedy przedmiot został zamówiony.
      ```sql
      CREATE FUNCTION daypassed(date DATE) RETURNS INT READS SQL DATA return DATEDIFF(current_date, date);
      ``` 
- 12. Stwórz funkcję `initcap` powodującą, że każde słowo zaczyna się od dużej litery, a reszta jego liter staje się mała.
-    ```sql
-    
-    ```
+ 12. Stwórz funkcję **brutto** zwracającą cenę z podatkiem vat 23%.
+     ```sql
+     CREATE FUNCTION brutto(price DECIMAL) RETURNS DOUBLE DETERMINISTIC return price * 1.23;
+     ```
  13. Stwórz procedurę ustawiającą **achived_on** dla wszystkich zamówień starszych od 90 dni.
      ```sql
 
      ```
- 14. Stwórz procedurę drukującą na standardowe wyjście listę etykiet z adresem w formacie: **{order_number}-{customer_name}-{shipping_address}**
-     dla wszystkich zamówień, których wartość kolumn **sent_on** wypada w ciągu 24 godzin.
+ 14. Stwórz procedurę wyszukująca zamówienia wysłane w ciągu 24 godzin i zapisującą je do tabeli **just_sent_orders**.
      ```sql
-     DROP PROCEDURE  print_labels;
-     
-     DELIMITER $$
-     
-     CREATE PROCEDURE print_labels()
-     BEGIN
-     
-         DECLARE v_finished INTEGER DEFAULT 0;
-         DECLARE v_selected_order varchar(100) DEFAULT '';
-     
-         DEClARE order_cursor CURSOR FOR
-             SELECT CONCAT('{', order_number,'}-{',customer_name,'}-{',shipping_address,'}') FROM orders
-             WHERE sent_on BETWEEN current_timestamp AND date_add(current_timestamp, INTERVAL 24 HOUR);_
-         
-         DECLARE CONTINUE HANDLER
-             FOR NOT FOUND SET v_finished = 1;
-     
-         OPEN order_cursor;
-     
-         get_orders: LOOP
-     
-             FETCH order_cursor INTO v_selected_order;
-     
-             IF v_finished = 1 THEN
-                 LEAVE get_orders;
-             END IF;
-     
-         END LOOP get_orders;
-     
-         SELECT v_selected_order;
-     
-         CLOSE order_cursor;
-     
-     END$$
-     
-     DELIMITER ;
-     
-     CALL print_labels()
+ 
      ```
- 15. Stwórz widok `active_orders` pozwalajacy zobaczyć numer zamówienia, nazwę klienta oraz adres wysyłki wszystkich zamówień,
+ 15. Stwórz widok **active_orders** pozwalajacy zobaczyć numer zamówienia, nazwę klienta oraz adres wysyłki wszystkich zamówień,
      które które nie zostały jeszcze wysłane, ani zarchiwizowane.
      ```sql
      CREATE VIEW active_orders AS (
         SELECT * FROM orders WHERE sent_on IS NOT NULL AND archived_on IS NOT NULL
      );
      ```
- 16. Stwórz widok `orders_summaries`, który pozwala zobaczyć numer zamówienia, nazwę klienta, adres wysyłki oraz łączną kwotę zamówienia.
+ 16. Stwórz widok **orders_summaries**, który pozwala zobaczyć numer zamówienia, nazwę klienta, adres wysyłki oraz łączną kwotę zamówienia, 
+     zawierającą kolumn **customer_name**, **order_number**, **customer_name**, **total_price**.
      ```sql
      CREATE VIEW orders_summaries AS (
          SELECT customer_name, shipping_address, order_number, SUM(price) AS total_price
@@ -868,6 +862,10 @@
          GROUP BY customer_name, shipping_address, order_number
      );
      ```
- 17. Stwórz użytkowników bazy danych: **admin** mający pełny dostęp oraz **stats** który ma dostęp tylko do odczytu dla widoków.
+ 17.  Stwórz użytkowników bazy danych: **shop_user** mający pełny dostęp oraz **stats_user** który ma dostęp tylko do odczytu dla widoków.
+ 
+      ```sql
+
+      ```
 
  
