@@ -46,7 +46,7 @@
  
  1. Zwróć imiona i nazwiska uczniów jako jedną kolumnę o nazwie **name** z tabeli **students**.
  2. Zwróć inicjały uczniów jako kolumnę **shortcut** (Andrzej Nowacki -> A.N.).
- 3. Zwróć całe imiona nauczycieli napisane dużymi literami.
+ 3. Zwróć imiona nauczycieli napisane dużymi literami.
  4. Zwróć imię, nazwisko i rok urodzenia każdego ucznia.
  5. Zwróć bieżącą datę.
  6. Stwórz zapytanie symulujące rzut kostką sześciościenną.
