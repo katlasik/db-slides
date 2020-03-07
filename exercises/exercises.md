@@ -144,7 +144,7 @@
 
 ## Data Manipulation Language
 
- 1. Dodaj rekord  do tabeli **students** dla ucznia o *Zbigniew Nowak*.
+ 1. Dodaj rekord  do tabeli **students** dla ucznia o imieniu i nazwisku *Zbigniew Nowak*.
  2. Zaktualizuj rekord w tabeli **students** zmieniając nazwisko ucznia o **id** równym **2** na *Woźniak*.
  3. Zamień imię i nazwisko wszystkim uczniom urodzonym po 1997 roku.
  4. Zmień wszystkie nazwiska nauczycieli na pierwszą literę nazwiska oraz kropkę. Na przykład `Nowak` na `N.`.
