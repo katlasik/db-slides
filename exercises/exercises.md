@@ -144,16 +144,16 @@
 
 ## Data Manipulation Language
 
- 1. Dodaj rekord  do tabeli **students** dla ucznia o imieniu i nazwisku *Zbigniew Nowak* i dacie urodzenia 4 luty 1996.
- 2. Zaktualizuj rekord w tabeli **students** zmieniając nazwisko ucznia o **id** równym **2** na *Woźniak*.
- 3. Zamień imię i nazwisko wszystkim uczniom urodzonym po 1997 roku.
+ 1. Dodaj rekord  do tabeli **students** dla ucznia o imieniu i nazwisku *Zbigniew Nowak* i dacie urodzenia *4 luty 1996*.
+ 2. Zaktualizuj rekord w tabeli **students** zmieniając nazwisko ucznia o **id** równym *2* na *Woźniak*.
+ 3. Zamień imię i nazwisko miejscami wszystkim uczniom urodzonym po *1997* roku.
  4. Zmień wszystkie nazwiska nauczycieli na pierwszą literę nazwiska oraz kropkę. Na przykład `Nowak` na `N.`.
- 5. Usuń z tabeli **teachers** nauczyciela o id 2. 
-    Następnie usuń nauczyciela o id 6. 
+ 5. Usuń z tabeli **teachers** nauczyciela o id *2*. 
+    Następnie usuń nauczyciela o id *6*. 
     Sprawdź czy jest możliwe usunięcie rekordu, który jest kluczem obcym w innych tabelach.
  6. Spróbuj usunąć wszystkie rekordy z tabeli **student_notes**.
  7. Pobierz wszystkie imiona i nazwiska nauczycieli i dodaj je do tabeli **students**.
-    Urodziny wpisz na stałe `1980-01-01` (trudniejsze: wygeneruj urodziny jako losową datę w wybranym przez siebie zakresie).
+    Urodziny wpisz na stałe *1980-01-01* (trudniejsze: wygeneruj urodziny jako losową datę w wybranym przez siebie zakresie).
  8. Wszystkich uczniów, którzy urodzili się przed 1 stycznia 1997 roku dodaj do tabeli **teachers**.
 
 ## Data Definition Language oraz Data Control Language
