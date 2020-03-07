@@ -38,8 +38,8 @@
  4. Wyszukaj dane w tabeli **students**, tak aby pobrać tylko uczniów urodzonych przed 1 stycznia 1999 roku.
  5. Wyszukaj dane w tabeli **students**, tak aby pobrać tylko uczniów urodzonych przed 1 stycznia 1999 roku, ale po 1 stycznia 1998 roku.
  6. Znajdź imiona 3 najstarszych uczniów w tabeli **students** urodzonych po 1 stycznia 1996 roku.
- 7. Znajdź uczniów, których nazwiska zaczynają się do *Ko*.
- 8. Znajdź uczniów, których nazwiska kończą się się do *ski*.
+ 7. Znajdź uczniów, których nazwiska zaczynają się od *Ko*.
+ 8. Znajdź uczniów, których nazwiska kończą się się od *ski*.
  9. Znajdź uczniów, których nazwiska zawierają *wal*. 
  
 ### Funkcje  
@@ -47,7 +47,7 @@
  1. Zwróć imiona i nazwiska uczniów jako jedną kolumnę o nazwie **name** z tabeli **students**.
  2. Zwróć inicjały uczniów jako kolumnę **shortcut** (Andrzej Nowacki -> A.N.).
  3. Zwróć całe imiona nauczycieli napisane dużymi literami.
- 4. Zwróć imię, nazwisko i rok urodzenia danego ucznia.
+ 4. Zwróć imię, nazwisko i rok urodzenia każdego ucznia.
  5. Zwróć bieżącą datę.
  6. Stwórz zapytanie symulujące rzut kostką sześciościenną.
  7. Zwróć ilość dni do końca 2020 roku.
