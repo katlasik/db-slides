@@ -214,7 +214,7 @@
  14. Stwórz widok **active_orders** pozwalajacy zobaczyć numer zamówienia, nazwę klienta oraz adres wysyłki wszystkich zamówień,
      które które nie zostały jeszcze wysłane, ani zarchiwizowane.
  15. Stwórz nową tabele **summary**, która będzie posiadała 3 kolumny: **year**, **month** oraz **total_orders_amount**.
- Kluczem głównym nie będzie klucz kompozytowy używający **year** oraz **month**. Stwórz procedurę **calculate_total_orders_amount**, która uzupełnia tą tabelę używając danych z tabel **orders** obliczając łączną sumę kwot zamówień dla danego miesiaca.
+ Kluczem głównym nie będzie klucz kompozytowy używający **year** oraz **month**. Stwórz procedurę **calculate_summary**, która uzupełnia tą tabelę używając danych z tabel **orders** obliczając łączną sumę kwot zamówień dla danego miesiaca.
  16. Stwórz widok **orders_summaries**, który pozwala zobaczyć numer zamówienia, nazwę klienta, adres wysyłki oraz łączną kwotę zamówienia, 
      zawierającą kolumn **customer_name**, **order_number**, **customer_name**, **total_price**.
  17. Stwórz użytkowników bazy danych: **shop_user** mający pełny dostęp do bazy danych **shop** oraz **stats_user** który ma dostęp tylko do odczytu dla widoków.
