@@ -668,11 +668,11 @@
 
 ## Data Manipulation Language
 
- 1. Dodaj nowego nauczyciela *"Zbigniew Nowak"* do tabeli **teachers**.
+ 1. Dodaj rekord do tabeli students dla ucznia o imieniu i nazwisku *Zbigniew Nowak* i dacie urodzenia *4 luty 1996*.
     ```sql
-    INSERT INTO teachers(first_name, last_name) VALUES ('Zbigniew', 'Nowak');
+    INSERT INTO students(first_name, last_name, birthdate) VALUES ('Zbigniew', 'Nowak', '1996-02-04');
     ``` 
- 2. Zaktualizuj nazwisko ucznia o id 2 no *"Woźniak".
+ 2. Zaktualizuj rekord w tabeli students zmieniając nazwisko ucznia o id równym **2** na Woźniak.
     ```sql
     UPDATE students SET last_name='Woźniak' WHERE id=2;
     ```
