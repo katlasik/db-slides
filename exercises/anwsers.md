@@ -335,7 +335,7 @@
 
  3. Wyświetl listę uczniów wzraz z ocenami, datami otrzymania tych ocen oraz przedmiotami na których zostały otrzymane. 
     Posortuje dane alfebetycznie po imionach uczniów, a potem chronologicznie od najstarszej otrzymanej oceny. 
-    Dodatkowo wyświetl ocenę jako ilość gwiazdek, na przykład **3** -> \***\*.
+    Dodatkowo wyświetl ocenę jako ilość gwiazdek, na przykład **3** -> *\*\*\**.
     Może występować wiele wierszy na ucznia.
  
     ```sql
@@ -557,7 +557,7 @@
     ) SELECT * FROM first_days;
     ```
   
- 4. Stwórz ranking zawierający najlepszą ocenę oraz ucznia który ją uzyskał według miesiąca. Nawet jeżeli dla danego miesiąca nie ma żadnych ocen to miesiąc powinien zostać wyświetlony.
+ 4. Stwórz ranking zawierający najlepszą ocenę według miesiąca. Nawet jeżeli dla danego miesiąca nie ma żadnych ocen to miesiąc powinien zostać wyświetlony.
    
     ```sql
     WITH months AS (
