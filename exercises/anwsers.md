@@ -289,7 +289,7 @@
      )
      ```
   
-  6. Wyznacz różnicę między majlepszą, a najgorszą średnią ocen ucznia.
+  6. Wyznacz różnicę między najlepszą, a najgorszą średnią ocen uczniów.
      
      ```sql
      SELECT MAX(avg) - MIN(avg)
