@@ -76,7 +76,7 @@
  5. Wyświetl przedmioty szkolne, których uczniowie dostali co najmniej 2 szóstki.
  6. Wyznacz różnicę między najlepszą, a najgorszą średnią ocen uczniów.
  7. Znajdź uczniów, którzy ze wszystkich przedmiotów dostali średnią powyżej 2.5.
- 8. Znajdź uczniów, którzy przynajmniej z jednego przedmiotu dostatli średnią poniżej 2.5.
+ 8. Znajdź uczniów, którzy przynajmniej z jednego przedmiotu dostali średnią poniżej 2.5.
  
 ### Złączenia
  1. Wyświetl wszystkich nauczycieli oraz klasy, których uczą. Jeżeli nie uczą żadnej klasy, to wyświetl *"brak"*.
