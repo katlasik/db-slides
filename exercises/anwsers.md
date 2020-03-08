@@ -856,8 +856,27 @@
      ```
 15. Stwórz nową tabele summary, która będzie posiadała 3 kolumny: year, month oraz total_orders_amount. Kluczem głównym nie będzie klucz kompozytowy używający year oraz month. Stwórz procedurę calculate_summary, która uzupełnia tą tabelę używając danych z tabel orders obliczając łączną sumę kwot zamówień dla danego miesiaca.    
      ```sql
-     
+     CREATE TABLE summary(
+                        month integer not null,
+                        year integer not null,
+                        total_orders_amount DECIMAL(10,2),
+                        PRIMARY KEY(month, year)
+     );
+
+     DELIMITER $$
+
+     CREATE PROCEDURE calculate_summary(IN year INTEGER, IN month INTEGER)
+     BEGIN
+         DECLARE sum DECIMAL(10,2);
+         SELECT SUM(price) INTO sum FROM orders o JOIN purchased_items pi on o.id = pi.order_id WHERE year(o.ordered_on) = year AND month(o.ordered_on) = month;
+
+         INSERT INTO summary(year, month, total_orders_amount) VALUES(year, month, sum);
+
+     END;
+
+     DELIMITER ;
      ```
+     
  16. Stwórz widok **orders_summaries**, który pozwala zobaczyć numer zamówienia, nazwę klienta, adres wysyłki oraz łączną kwotę zamówienia, 
      zawierającą kolumn **customer_name**, **order_number**, **customer_name**, **total_price**.
      ```sql
