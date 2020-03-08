@@ -85,7 +85,7 @@
     Może występować wiele wierszy na ucznia. Nawet jeżeli uczeń nie uczy się w żadnej klasie powienien zostać wyświetlony. 
  3. Wyświetl listę uczniów wzraz z ocenami, datami otrzymania tych ocen oraz przedmiotami na których zostały otrzymane. 
     Posortuje dane alfebetycznie po imionach uczniów, a potem chronologicznie od najstarszej otrzymanej oceny. 
-    Dodatkowo wyświetl ocenę jako ilość gwiazdek, na przykład **3** -> \***\*.
+    Dodatkowo wyświetl ocenę jako ilość gwiazdek, na przykład **3** -> *\*\*\**.
     Może występować wiele wierszy na ucznia.
  4. Wyświetl listę nauczycieli wraz z listą wystawionych przez nich ocen wraz z datami. 
     Posortuj po nazwisku nauczyciela alfabetycznie, a potem od nastarszej oceny.
