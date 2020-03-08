@@ -195,12 +195,12 @@
    | Długopis        | 99.4               |
     
  4. Dodaj nową kolumnę typu **date** o nazwie **updated_on** dla tabeli **orders**.
- 5. Dodaj trigger uaktualniający kolumnę **updated_on** zawsze gdy tabela **orders** jest edytowana.
- 6. Dodaj nową kolumnę **created_on** dla tabeli **items** i ustaw domyślną wartość na bieżący czas.
+ 5. Dodaj nową kolumnę **created_on** dla tabeli **items** i ustaw domyślną wartość na bieżący czas.
     Zrób analogiczną operację dla tabeli **orders**.
- 7. Zmień nazwę tabeli **items** na **purchased_items**.
- 8. Zmień nazwę kolumn **created_on** w  **orders** na **ordered_on**.
- 9. Dodaj nową kolumnę **shipping_country** do tabeli **orders** z domyślną wartością "Polska".
+ 6. Zmień nazwę tabeli **items** na **purchased_items**.
+ 7. Zmień nazwę kolumn **created_on** w  **orders** na **ordered_on**.
+ 8. Dodaj nową kolumnę **shipping_country** do tabeli **orders** z domyślną wartością "Polska".
+ 9. Dodaj trigger uaktualniający kolumnę **updated_on** zawsze gdy tabela **orders** jest edytowana.
  10. Wykonaj zapytania:
  
      ```sql
@@ -211,11 +211,12 @@
  11. Stwórz fukcję **days_passed** zwracająca ilość dni od kiedy przedmiot został zamówiony.
  12. Stwórz funkcję **brutto** zwracającą cenę z podatkiem vat 23%.
  13. Stwórz procedurę ustawiającą **achived_on** dla wszystkich zamówień starszych od 90 dni.
- 14. Stwórz procedurę wyszukująca zamówienia wysłane w ciągu 24 godzin i zapisującą je do tabeli **just_sent_orders**.
- 15. Stwórz widok **active_orders** pozwalajacy zobaczyć numer zamówienia, nazwę klienta oraz adres wysyłki wszystkich zamówień,
+ 14. Stwórz widok **active_orders** pozwalajacy zobaczyć numer zamówienia, nazwę klienta oraz adres wysyłki wszystkich zamówień,
      które które nie zostały jeszcze wysłane, ani zarchiwizowane.
+ 15. Stwórz nową tabele **summary**, która będzie posiadała 3 kolumny: **year**, **month** oraz **total_orders_amount**.
+ Kluczem głównym nie będzie klucz kompozytowy używający **year** oraz **month**. Stwórz procedurę **calculate_total_orders_amount**, która uzupełnia tą tabelę używając danych z tabel **orders** obliczając łączną sumę kwot zamówień dla danego miesiaca.
  16. Stwórz widok **orders_summaries**, który pozwala zobaczyć numer zamówienia, nazwę klienta, adres wysyłki oraz łączną kwotę zamówienia, 
      zawierającą kolumn **customer_name**, **order_number**, **customer_name**, **total_price**.
- 17. Stwórz użytkowników bazy danych: **shop_user** mający pełny dostęp oraz **stats_user** który ma dostęp tylko do odczytu dla widoków.
+ 17. Stwórz użytkowników bazy danych: **shop_user** mający pełny dostęp do bazy danych **shop** oraz **stats_user** który ma dostęp tylko do odczytu dla widoków.
 
  
