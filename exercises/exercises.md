@@ -210,7 +210,7 @@
      Sprawdź plany zapytań. Stwórz indeks pozwalający łatwo wyszukiwać przedmioty po nazwie. Sprawdź jak zmieniły się plany zapytania.
  11. Stwórz fukcję **days_passed** zwracająca ilość dni od kiedy przedmiot został zamówiony.
  12. Stwórz funkcję **brutto** zwracającą cenę z podatkiem vat 23%.
- 13. Stwórz procedurę ustawiającą **achived_on** dla wszystkich zamówień starszych od 90 dni.
+ 13. Stwórz procedurę **calculate_archived_on** ustawiającą **achived_on** dla wszystkich zamówień starszych niż liczba dni podanych jako parametr wejściowy **threshold**.
  14. Stwórz widok **active_orders** pozwalajacy zobaczyć numer zamówienia, nazwę klienta oraz adres wysyłki wszystkich zamówień,
      które które nie zostały jeszcze wysłane, ani zarchiwizowane.
  15. Stwórz nową tabelę **summary**, która będzie posiadała 3 kolumny: **year**, **month** oraz **total_orders_amount**.
