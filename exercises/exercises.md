@@ -115,7 +115,7 @@
  1. Zwróć listę imion i nazwisk uczniów i nauczycieli. Kolumny nazwij **imię** i **nazwisko**.
  2. Zwróć listę nazwisk uczniów i nauczycieli  w jednej kolumnie a w drugiej to jak często występują.
  3. Stwórz listę pierwszych dni miesiąca od 1 stycznia 2010 do 1 stycznia 2020.
- 4. Stwórz ranking zawierający najlepszą ocenę oraz ucznia który ją uzyskał według miesiąca. Nawet jeżeli dla danego
+ 4. Stwórz ranking zawierający najlepszą ocenę według miesiąca. Nawet jeżeli dla danego
      miesiąca nie ma żadnych ocen to miesiąc powinien zostać wyświetlony.
  5. Narysuj choinkę używając rekurencyjnego zapytania **WITH RECURSIVE**:   
     ``` 
