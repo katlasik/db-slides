@@ -854,7 +854,7 @@
         SELECT * FROM orders WHERE sent_on IS NOT NULL AND archived_on IS NOT NULL
      );
      ```
-15. Stwórz nową tabele summary, która będzie posiadała 3 kolumny: year, month oraz total_orders_amount. Kluczem głównym nie będzie klucz kompozytowy używający year oraz month. Stwórz procedurę calculate_summary, która uzupełnia tą tabelę używając danych z tabel orders obliczając łączną sumę kwot zamówień dla danego miesiaca.    
+15. Stwórz nową tabele **summary**, która będzie posiadała 3 kolumny: **year**, **month** oraz **total_orders_amount**. Kluczem głównym nie będzie klucz kompozytowy używający **year** oraz **month**. Stwórz procedurę **calculate_summary**, która uzupełnia tą tabelę używając danych z tabel **orders** obliczając łączną sumę kwot zamówień dla danego miesiaca.    
      ```sql
      CREATE TABLE summary(
                         month integer not null,
@@ -890,7 +890,12 @@
  17.  Stwórz użytkowników bazy danych: **shop_user** mający pełny dostęp oraz **stats_user** który ma dostęp tylko do odczytu dla widoków.
  
       ```sql
-
+      CREATE USER 'shop_user'@'localhost' IDENTIFIED BY 'pass';
+      GRANT ALL PRIVILEGES ON shop.* TO shop_user; 
+      
+      CREATE USER 'stats_user'@'localhost' IDENTIFIED BY 'pass';
+      GRANT SELECT ON shop.orders_summaries TO stats_user; 
+      GRANT SELECT ON shop.active_orders TO stats_user; 
       ```
 
  
