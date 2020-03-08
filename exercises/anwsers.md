@@ -783,7 +783,28 @@
         updated_on DATETIME NULL
     );
     ```
- 5. Dodaj trigger uaktualniający kolumnę **updated_on** zawsze gdy tabela **orders** jest edytowana.
+ 5. Dodaj nową kolumnę **created_on** dla tabeli **items** i dodaj domyślną wartość ustawiającą tą kolumnę podczas tworzenia przedmiotu.
+    Zrób analogiczną operację dla tabeli **orders**.
+    ```sql
+    ALTER TABLE orders ADD COLUMN (
+        created_on DATETIME DEFAULT current_timestamp
+    );    
+    ```
+ 6. Zmień nazwę tabeli **items** na **purchased_items**.
+    ```sql
+    ALTER TABLE items RENAME TO purchased_items;
+    ```
+ 7. Zmień nazwę kolumn **created_on** w  **orders** na **ordered_on**.
+    ```sql
+    ALTER TABLE orders RENAME COLUMN created_on TO ordered_on;
+    ```
+ 8. Dodaj nową kolumnę **shipping_country** do tabeli **orders** z domyślną wartością "Polska".
+    ```sql
+    ALTER TABLE orders ADD COLUMN (
+        shipping_country VARCHAR(300) DEFAULT 'Polska'
+    );
+    ```
+ 9. Dodaj trigger uaktualniający kolumnę **updated_on** zawsze gdy tabela **orders** jest edytowana.
     ```sql
     DELIMITER $$
     
@@ -794,27 +815,6 @@
     END;
     
     $$
-    ```
- 6. Dodaj nową kolumnę **created_on** dla tabeli **items** i dodaj domyślną wartość ustawiającą tą kolumnę podczas tworzenia przedmiotu.
-    Zrób analogiczną operację dla tabeli **orders**.
-    ```sql
-    ALTER TABLE orders ADD COLUMN (
-        created_on DATETIME DEFAULT current_timestamp
-    );    
-    ```
- 7. Zmień nazwę tabeli **items** na **purchased_items**.
-    ```sql
-    ALTER TABLE items RENAME TO purchased_items;
-    ```
- 8. Zmień nazwę kolumn **created_on** w  **orders** na **ordered_on**.
-    ```sql
-    ALTER TABLE orders RENAME COLUMN created_on TO ordered_on;
-    ```
- 9. Dodaj nową kolumnę **shipping_country** do tabeli **orders** z domyślną wartością "Polska".
-    ```sql
-    ALTER TABLE orders ADD COLUMN (
-        shipping_country VARCHAR(300) DEFAULT 'Polska'
-    );
     ```
  10. Wykonaj zapytania:
       
@@ -841,16 +841,15 @@
      ```sql
 
      ```
- 14. Stwórz procedurę wyszukująca zamówienia wysłane w ciągu 24 godzin i zapisującą je do tabeli **just_sent_orders**.
-     ```sql
- 
-     ```
- 15. Stwórz widok **active_orders** pozwalajacy zobaczyć numer zamówienia, nazwę klienta oraz adres wysyłki wszystkich zamówień,
-     które które nie zostały jeszcze wysłane, ani zarchiwizowane.
+ 14. Stwórz widok **active_orders** pozwalajacy zobaczyć numer zamówienia, nazwę klienta oraz adres wysyłki wszystkich zamówień, które które nie zostały jeszcze wysłane, ani zarchiwizowane.
      ```sql
      CREATE VIEW active_orders AS (
         SELECT * FROM orders WHERE sent_on IS NOT NULL AND archived_on IS NOT NULL
      );
+     ```
+15. Stwórz nową tabele summary, która będzie posiadała 3 kolumny: year, month oraz total_orders_amount. Kluczem głównym nie będzie klucz kompozytowy używający year oraz month. Stwórz procedurę calculate_summary, która uzupełnia tą tabelę używając danych z tabel orders obliczając łączną sumę kwot zamówień dla danego miesiaca.    
+     ```sql
+     
      ```
  16. Stwórz widok **orders_summaries**, który pozwala zobaczyć numer zamówienia, nazwę klienta, adres wysyłki oraz łączną kwotę zamówienia, 
      zawierającą kolumn **customer_name**, **order_number**, **customer_name**, **total_price**.
