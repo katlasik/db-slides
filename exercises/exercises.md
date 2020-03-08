@@ -74,7 +74,7 @@
  3. Znajdź przedmioty, których średnia ocen jest wyższa niż średnia ocen dla wszystkich przedmiotów.
  4. Wyświetl uczniów, którzy otrzymali przynajmniej jedną szóstkę.
  5. Wyświetl przedmioty szkolne, których uczniowie dostali co najmniej 2 szóstki.
- 6. Wyznacz różnicę między majlepszą, a najgorszą średnią ocen ucznia.
+ 6. Wyznacz różnicę między najlepszą, a najgorszą średnią ocen uczniów.
  7. Znajdź uczniów, którzy ze wszystkich przedmiotów dostali średnią powyżej 2.5.
  8. Znajdź uczniów, którzy przynajmniej z jednego przedmiotu dostatli średnią poniżej 2.5.
  
