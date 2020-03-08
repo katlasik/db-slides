@@ -846,7 +846,7 @@
          UPDATE orders SET archived_on = current_date WHERE ordered_on < current_date - INTERVAL threshold DAY;
      END;
 
-    DELIMITER ;
+     DELIMITER ;
      ```
  14. Stwórz widok **active_orders** pozwalajacy zobaczyć numer zamówienia, nazwę klienta oraz adres wysyłki wszystkich zamówień, które które nie zostały jeszcze wysłane, ani zarchiwizowane.
      ```sql
