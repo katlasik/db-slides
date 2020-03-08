@@ -837,9 +837,16 @@
      ```sql
      CREATE FUNCTION brutto(price DECIMAL) RETURNS DOUBLE DETERMINISTIC return price * 1.23;
      ```
- 13. Stwórz procedurę ustawiającą **achived_on** dla wszystkich zamówień starszych od 90 dni.
+ 13. Stwórz procedurę **calculate_archived_on** ustawiającą **achived_on** dla wszystkich zamówień starszych niż liczba dni podanych jako parametr wejściowy **threshold**.
      ```sql
+     DELIMITER $$
 
+     CREATE PROCEDURE calculate_archived_on(IN threshold INT)
+     BEGIN
+         UPDATE orders SET archived_on = current_date WHERE ordered_on < current_date - INTERVAL threshold DAY;
+     END;
+
+    DELIMITER ;
      ```
  14. Stwórz widok **active_orders** pozwalajacy zobaczyć numer zamówienia, nazwę klienta oraz adres wysyłki wszystkich zamówień, które które nie zostały jeszcze wysłane, ani zarchiwizowane.
      ```sql
