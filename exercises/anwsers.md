@@ -307,7 +307,7 @@
      2.5 < ALL(SELECT AVG(value) FROM student_notes WHERE student_id = students.id GROUP BY school_class_id);
      ```
       
-  8. Znajdź uczniów, którzy przynajmniej z jednego przedmiotu dostatli średnią poniżej 2.5.
+  8. Znajdź uczniów, którzy przynajmniej z jednego przedmiotu dostali średnią poniżej 2.5.
      
      ```sql
      SELECT * FROM students WHERE
