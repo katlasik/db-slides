@@ -821,17 +821,17 @@
      );
      ```  
  11. Dodaj trigger uaktualniający kolumnę **updated_on** zawsze gdy tabela **orders** jest edytowana.
-    ```sql
-    DELIMITER $$
+     ```sql
+     DELIMITER $$
     
-    CREATE TRIGGER orders_update_trg BEFORE UPDATE ON orders
-        FOR EACH ROW
-    BEGIN
-        SET new.updated_on = CURRENT_TIMESTAMP;
-    END;
+     CREATE TRIGGER orders_update_trg BEFORE UPDATE ON orders
+         FOR EACH ROW
+     BEGIN
+         SET new.updated_on = CURRENT_TIMESTAMP;
+     END;
     
-    $$
-    ```
+     $$
+     ```
  12. Wykonaj zapytania:
       
      ```sql
