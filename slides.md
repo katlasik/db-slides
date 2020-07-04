@@ -1113,7 +1113,7 @@ Najpopularniesze opcje to:
 **Widok** (zwany również wirtualną tabelą, ang. *view*) składa się ze zbioru wierszy
 zwracanych w wyniku wykonania określonego zapytania SQL. Widok **nie stanowi kopii danych** reprezentowanych przez zapytanie.
 
-* Widoki mogą ukrywajać złożone złączenia pobierające danych z kilku tabel
+* Widoki mogą ukrywać złożone złączenia pobierające dane z wielu tabel
 * Umożliwiają ograniczenia dostępu do kolumn (np. ukrywanie wysokości pensji)
 
 * Widok zmaterializowany (*ang.* materialized view) tworzy kopię danych z zapytania wykorzystanego do jego stworzenia.

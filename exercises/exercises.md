@@ -200,23 +200,25 @@
  6. Zmień nazwę tabeli **items** na **purchased_items**.
  7. Zmień nazwę kolumn **created_on** w  **orders** na **ordered_on**.
  8. Dodaj nową kolumnę **shipping_country** do tabeli **orders** z domyślną wartością "Polska".
- 9. Dodaj trigger uaktualniający kolumnę **updated_on** zawsze gdy tabela **orders** jest edytowana.
- 10. Wykonaj zapytania:
+ 9. Stwórz widok **active_orders** pozwalający zobaczyć numer zamówienia, nazwę klienta oraz adres wysyłki wszystkich zamówień,
+      które nie zostały jeszcze wysłane, ani zarchiwizowane.
+ 10. Stwórz widok **orders_summaries**, który pozwala zobaczyć numer zamówienia, nazwę klienta, adres wysyłki oraz łączną kwotę zamówienia, 
+       zawierającą kolumn **customer_name**, **order_number**, **customer_name**, **total_price**.
+  
+ 11. Dodaj trigger uaktualniający kolumnę **updated_on** zawsze, gdy tabela **orders** jest edytowana.
+ 12. Wykonaj zapytania:
  
      ```sql
-     SELECT * FROM items WHERE name = 'Długopis';
-     SELECT * FROM items WHERE name LIKE 'D%';
+     SELECT * FROM purchased_items WHERE name = 'Długopis';
+     SELECT * FROM purchased_items WHERE name LIKE 'D%';
      ``` 
      Sprawdź plany zapytań. Stwórz indeks pozwalający łatwo wyszukiwać przedmioty po nazwie. Sprawdź jak zmieniły się plany zapytania.
- 11. Stwórz fukcję **days_passed** zwracająca ilość dni od kiedy przedmiot został zamówiony.
- 12. Stwórz funkcję **brutto** zwracającą cenę z podatkiem vat 23%.
- 13. Stwórz procedurę **calculate_archived_on** ustawiającą **achived_on** dla wszystkich zamówień starszych niż liczba dni podanych jako parametr wejściowy **threshold**.
- 14. Stwórz widok **active_orders** pozwalajacy zobaczyć numer zamówienia, nazwę klienta oraz adres wysyłki wszystkich zamówień,
-     które które nie zostały jeszcze wysłane, ani zarchiwizowane.
- 15. Stwórz nową tabelę **summary**, która będzie posiadała 3 kolumny: **year**, **month** oraz **total_orders_amount**.
+ 13. Stwórz fukcję **days_passed** zwracająca ilość dni od kiedy przedmiot został zamówiony.
+ 14. Stwórz funkcję **brutto** zwracającą cenę z podatkiem vat 23%.
+ 15. Stwórz procedurę **calculate_archived_on** ustawiającą **achived_on** dla wszystkich zamówień starszych niż liczba dni podanych jako parametr wejściowy **threshold**.
+ 16. Stwórz nową tabelę **summary**, która będzie posiadała 3 kolumny: **year**, **month** oraz **total_orders_amount**.
  Kluczem głównym nie będzie klucz kompozytowy używający **year** oraz **month**. Stwórz procedurę **calculate_summary**, która uzupełnia tą tabelę używając danych z tabel **orders** obliczając łączną sumę kwot zamówień dla miesiąca i roku podanych jako parametry.
- 16. Stwórz widok **orders_summaries**, który pozwala zobaczyć numer zamówienia, nazwę klienta, adres wysyłki oraz łączną kwotę zamówienia, 
-     zawierającą kolumn **customer_name**, **order_number**, **customer_name**, **total_price**.
+ 
  17. Stwórz użytkowników bazy danych: **shop_user** mający pełny dostęp do bazy danych **shop** oraz **stats_user** który ma dostęp tylko do odczytu dla widoków.
 
  

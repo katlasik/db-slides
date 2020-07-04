@@ -804,7 +804,23 @@
         shipping_country VARCHAR(300) DEFAULT 'Polska'
     );
     ```
- 9. Dodaj trigger uaktualniający kolumnę **updated_on** zawsze gdy tabela **orders** jest edytowana.
+  9. Stwórz widok **active_orders** pozwalajacy zobaczyć numer zamówienia, nazwę klienta oraz adres wysyłki wszystkich zamówień, które które nie zostały jeszcze wysłane, ani zarchiwizowane.
+          ```sql
+          CREATE VIEW active_orders AS (
+             SELECT * FROM orders WHERE sent_on IS NOT NULL AND archived_on IS NOT NULL
+          );
+          ```
+ 10. Stwórz widok **orders_summaries**, który pozwala zobaczyć numer zamówienia, nazwę klienta, adres wysyłki oraz łączną kwotę zamówienia, 
+     zawierającą kolumn **customer_name**, **order_number**, **customer_name**, **total_price**.
+     ```sql
+     CREATE VIEW orders_summaries AS (
+         SELECT customer_name, shipping_address, order_number, SUM(price) AS total_price
+         FROM orders
+                  JOIN purchased_items pi on orders.id = pi.order_id
+         GROUP BY customer_name, shipping_address, order_number
+     );
+     ```  
+ 11. Dodaj trigger uaktualniający kolumnę **updated_on** zawsze gdy tabela **orders** jest edytowana.
     ```sql
     DELIMITER $$
     
@@ -816,7 +832,7 @@
     
     $$
     ```
- 10. Wykonaj zapytania:
+ 12. Wykonaj zapytania:
       
      ```sql
      SELECT * FROM items WHERE name = 'Długopis';
@@ -829,15 +845,15 @@
      CREATE INDEX items_name_index ON items(name);
      ```
     
- 11. Stwórz fukcję **days_passed** zwracająca ilość dni od kiedy przedmiot został zamówiony.
+ 13. Stwórz fukcję **days_passed** zwracająca ilość dni od kiedy przedmiot został zamówiony.
      ```sql
      CREATE FUNCTION daypassed(date DATE) RETURNS INT READS SQL DATA return DATEDIFF(current_date, date);
      ``` 
- 12. Stwórz funkcję **brutto** zwracającą cenę z podatkiem vat 23%.
+ 14. Stwórz funkcję **brutto** zwracającą cenę z podatkiem vat 23%.
      ```sql
      CREATE FUNCTION brutto(price DECIMAL) RETURNS DOUBLE DETERMINISTIC return price * 1.23;
      ```
- 13. Stwórz procedurę **calculate_archived_on** ustawiającą **achived_on** dla wszystkich zamówień starszych niż liczba dni podanych jako parametr wejściowy **threshold**.
+ 15. Stwórz procedurę **calculate_archived_on** ustawiającą **achived_on** dla wszystkich zamówień starszych niż liczba dni podanych jako parametr wejściowy **threshold**.
      ```sql
      DELIMITER $$
 
@@ -848,13 +864,7 @@
 
      DELIMITER ;
      ```
- 14. Stwórz widok **active_orders** pozwalajacy zobaczyć numer zamówienia, nazwę klienta oraz adres wysyłki wszystkich zamówień, które które nie zostały jeszcze wysłane, ani zarchiwizowane.
-     ```sql
-     CREATE VIEW active_orders AS (
-        SELECT * FROM orders WHERE sent_on IS NOT NULL AND archived_on IS NOT NULL
-     );
-     ```
-15. Stwórz nową tabele **summary**, która będzie posiadała 3 kolumny: **year**, **month** oraz **total_orders_amount**. Kluczem głównym nie będzie klucz kompozytowy używający **year** oraz **month**. Stwórz procedurę **calculate_summary**, która uzupełnia tą tabelę używając danych z tabel **orders** obliczając łączną sumę kwot zamówień dla danego miesiaca.    
+ 16. Stwórz nową tabele **summary**, która będzie posiadała 3 kolumny: **year**, **month** oraz **total_orders_amount**. Kluczem głównym nie będzie klucz kompozytowy używający **year** oraz **month**. Stwórz procedurę **calculate_summary**, która uzupełnia tą tabelę używając danych z tabel **orders** obliczając łączną sumę kwot zamówień dla danego miesiaca.    
      ```sql
      CREATE TABLE summary(
                         month integer not null,
@@ -876,17 +886,7 @@
 
      DELIMITER ;
      ```
-     
- 16. Stwórz widok **orders_summaries**, który pozwala zobaczyć numer zamówienia, nazwę klienta, adres wysyłki oraz łączną kwotę zamówienia, 
-     zawierającą kolumn **customer_name**, **order_number**, **customer_name**, **total_price**.
-     ```sql
-     CREATE VIEW orders_summaries AS (
-         SELECT customer_name, shipping_address, order_number, SUM(price) AS total_price
-         FROM orders
-                  JOIN purchased_items pi on orders.id = pi.order_id
-         GROUP BY customer_name, shipping_address, order_number
-     );
-     ```
+    
  17.  Stwórz użytkowników bazy danych: **shop_user** mający pełny dostęp oraz **stats_user** który ma dostęp tylko do odczytu dla widoków.
  
       ```sql
