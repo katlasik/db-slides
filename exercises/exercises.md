@@ -102,7 +102,7 @@
     ilość uczniów która uczęszcza na dany przedmiot, nauczyciel, który uczy danego przedmiotu, najlepsza i najgorsza ocena.
  11. Wyznacz ile ocen wystawił dany nauczyciel. Każdy nauczyciel powienien zostać wyświetlony, nawet jeżeli nie wystawił ocen.
  12. Wyświetl średnią uczniów osobno dla każdego przedmiotu w formacie uczeń (imię i nazwisko, przedmiot, średnia).
- 13. Wyświetl średnią uczniów w formacie uczeń (imię i nazwisko, przedmiot, średnia).
+ 13. Wyświetl średnią uczniów w formacie uczeń (imię i nazwisko, średnia).
      Średnią oblicz metodą średniej ważonej: matematyka 2, fizyka i chemia 1.5, WOS 1.
  14. Wyświetl imiona oraz nazwiska uczniów oraz najlepszą ocenę danego ucznia według przedmiotu i kiedy ją otrzymał.
      Jeżeli uczeń otrzymał najlepszą ocenę wielokrotnie to wyświetl wiele wierszy. 
