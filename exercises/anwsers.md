@@ -845,7 +845,7 @@
      CREATE INDEX items_name_index ON items(name);
      ```
     
- 13. Stwórz fukcję **days_passed** zwracająca ilość dni od kiedy przedmiot został zamówiony.
+ 13. Stwórz fukcję **days_passed** zwracająca ilość dni, jaka mineła od danej daty.
      ```sql
      CREATE FUNCTION daypassed(date DATE) RETURNS INT READS SQL DATA return DATEDIFF(current_date, date);
      ``` 

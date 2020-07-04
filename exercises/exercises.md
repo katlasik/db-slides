@@ -213,7 +213,7 @@
      SELECT * FROM purchased_items WHERE name LIKE 'D%';
      ``` 
      Sprawdź plany zapytań. Stwórz indeks pozwalający łatwo wyszukiwać przedmioty po nazwie. Sprawdź jak zmieniły się plany zapytania.
- 13. Stwórz fukcję **days_passed** zwracająca ilość dni od kiedy przedmiot został zamówiony.
+ 13. Stwórz fukcję **days_passed** zwracająca ilość dni, jaka mineła od danej daty.
  14. Stwórz funkcję **brutto** zwracającą cenę z podatkiem vat 23%.
  15. Stwórz procedurę **calculate_archived_on** ustawiającą **achived_on** dla wszystkich zamówień starszych niż liczba dni podanych jako parametr wejściowy **threshold**.
  16. Stwórz nową tabelę **summary**, która będzie posiadała 3 kolumny: **year**, **month** oraz **total_orders_amount**.
